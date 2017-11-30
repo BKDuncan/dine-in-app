@@ -1,15 +1,97 @@
 <resources>
     <string name="app_name">Dine-in-app</string>
 
-    <!-- Strings related to login -->
+    <!-- Customer Info -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_fname">First Name</string>
+    <string name="prompt_lname">Last Name</string>
+    <string name="prompt_phone">Phone</string>
+    <string name="prompt_location">Location</string>
+
+    <!-- Login Messages -->
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions." </string>
+
+    <!-- Table Info -->
+    <string name="prompt_seats">Seats</string>
+    <string name="add_T_button">Add Table</string>
+
+    <!-- FoodItem Info -->
+    <string name="prompt_FI_name">Food Name</string>
+    <string name="prompt_FI_description">Description</string>
+    <string name="add_FI_button">Add Food Item</string>
+
+    <!-- Restaurant Home Nav -->
+    <string name="show_tables">Manage Tables</string>
+    <string name="show_transactions">Transactions</string>
+    <string name="show_orders">Orders</string>
+    <string name="show_fooditems">Food Menu</string>
+
+    <!-- Inspect Transaction -->
+    <string name="cost_hint">Subtotal:</string>
+    <string name="tip_hint">Tip:</string>
+    <string name="date_hint">Date:</string>
+    <string name="time_hint">Time:</string>
+    <string name="payment_type_hint">Payment Type:</string>
+
+    <!-- Spinner (dropdown menu) Items -->
+    <string-array name="city_list">
+        <item>Calgary</item>
+        <item>Edmonton</item>
+        <item>Vancouver</item>
+        <item>Toronto</item>
+        <item>Winnipeg</item>
+    </string-array>
+
+    <string-array name="item_type">
+        <item>Appetizer</item>
+        <item>Beverage</item>
+        <item>Meal</item>
+        <item>Dessert</item>
+    </string-array>
+
+    <string-array name="cuisine_type">
+        <item>Italian</item>
+        <item>Greek</item>
+        <item>Vietnamese</item>
+        <item>Mexican</item>
+        <item>Indian</item>
+        <item>Thai</item>
+        <item>French</item>
+        <item>Japanese</item>
+    </string-array>
+
+    <string-array name="dummy_reservations">
+        <item>Bob Jones 6:15PM</item>
+        <item>Carl Walker 2 8:00PM</item>
+        <item>Jamie Fox 3 6:55PM</item>
+        <item>Doug T 4 3:55PM </item>
+        <item>JJ Abba 3:00PM</item>
+        <item>Lena Smith 1:00PM</item>
+    </string-array>
+
+    <!-- Activity Titles -->
+    <string name="title_activity_signup">Account Signup</string>
+    <string name="title_activity_create_table">New Table</string>
+    <string name="title_activity_create_food_item">New Menu Item</string>
+    <string name="title_activity_restaurant_home">Restaurant Home</string>
+    <string name="title_activity_show_table_reservations">Table Reservations</string>
+    <string name="title_activity_show_transaction_detail">Transaction Detail</string>
+
+    <string name="title_activity_customer_home">CustomerHomeActivity</string>
+    <string name="title_activity_make_reservation">MakeReservationActivity</string>
+    <string name="title_activity_transaction">TransactionActivity</string>
+    <string name="title_activity_checkout">CheckoutActivity</string>
+    <string name="title_activity_show_food_items">ShowFoodItemsActivity</string>
+    <string name="title_activity_show_transaction">ShowTransactionActivity</string>
+    <string name="title_activity_show_order">ShowOrderActivity</string>
+
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>

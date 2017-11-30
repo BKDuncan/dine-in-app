@@ -22,7 +22,7 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="389dp">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -59,7 +59,8 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:text=" " />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -73,5 +74,12 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
     </ScrollView>
+
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_activity_signup" />
 </LinearLayout>

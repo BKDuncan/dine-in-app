@@ -27,6 +27,12 @@
     <string name="prompt_FI_description">Description</string>
     <string name="add_FI_button">Add Food Item</string>
 
+    <!-- Restaurant Home Nav -->
+    <string name="show_tables">Manage Tables</string>
+    <string name="show_transactions">Transactions</string>
+    <string name="show_orders">Orders</string>
+    <string name="show_fooditems">Food Menu</string>
+
     <!-- Spinner (dropdown menu) Items -->
     <string-array name="city_list">
         <item>Calgary</item>
@@ -54,8 +60,19 @@
         <item>Japanese</item>
     </string-array>
 
+    <string-array name="dummy_reservations">
+        <item>Bob Jones 6:15PM Table 7</item>
+        <item>Carl Walker 2 8:00PM Table 1</item>
+        <item>Jamie Fox 3 6:30PM Table 4</item>
+        <item>Doug T 4 6:15PM Table 8</item>
+        <item>JJ Abba 5 3:15PM Table 2</item>
+        <item>Lena Smith 6 1:00PM Table 22</item>
+    </string-array>
+
     <!-- Activity Titles -->
     <string name="title_activity_signup">Account Signup</string>
     <string name="title_activity_create_table">New Table</string>
     <string name="title_activity_create_food_item">New Menu Item</string>
+    <string name="title_activity_restaurant_home">Restaurant Home</string>
+    <string name="title_activity_show_table_reservations">Table Reservations</string>
 </resources>

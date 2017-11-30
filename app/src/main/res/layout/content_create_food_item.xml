@@ -63,8 +63,8 @@
 
     <Spinner
         android:id="@+id/spinner2"
-        android:layout_width="250"
-        android:layout_height="50"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -78,8 +78,8 @@
 
     <Spinner
         android:id="@+id/spinner3"
-        android:layout_width="250"
-        android:layout_height="50"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"

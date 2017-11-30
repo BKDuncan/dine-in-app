@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -25,6 +26,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CustomerHomeActivity"
+            android:label="@string/title_activity_customer_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MakeReservationActivity"
+            android:label="@string/title_activity_make_reservation"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".TransactionActivity"
+            android:label="@string/title_activity_transaction"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CheckoutActivity"
+            android:label="@string/title_activity_checkout"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShowFoodItemsActivity"
+            android:label="@string/title_activity_show_food_items"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShowTransactionActivity"
+            android:label="@string/title_activity_show_transaction"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShowOrderActivity"
+            android:label="@string/title_activity_show_order"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"

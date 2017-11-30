@@ -20,6 +20,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_create_food_item" />
+    <include
+        android:id="@+id/createFoodItemButton"
+        layout="@layout/content_create_food_item" />
 
 </android.support.design.widget.CoordinatorLayout>

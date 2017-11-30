@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -103,6 +104,15 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        Button signupButton = (Button) findViewById(R.id.signupButton);
+        signupButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent signupActivity = new Intent(MainActivity.this, SignupActivity.class);
+                startActivity(signupActivity);
             }
         });
 

@@ -15,6 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- Activities -->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -52,6 +54,36 @@
             android:name=".ShowOrderActivity"
             android:label="@string/title_activity_show_order"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".SignupActivity"
+            android:label="@string/title_activity_signup"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".CreateTableActivity"
+            android:label="@string/title_activity_create_table"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CreateFoodItem"
+            android:label="@string/title_activity_create_food_item"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RestaurantHomeActivity"
+            android:label="@string/title_activity_restaurant_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShowTableReservationsActivity"
+            android:label="@string/title_activity_show_table_reservations"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShowTransactionDetail"
+            android:label="@string/title_activity_show_transaction_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest>

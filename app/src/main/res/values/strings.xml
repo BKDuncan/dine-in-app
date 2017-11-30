@@ -83,4 +83,13 @@
     <string name="title_activity_restaurant_home">Restaurant Home</string>
     <string name="title_activity_show_table_reservations">Table Reservations</string>
     <string name="title_activity_show_transaction_detail">Transaction Detail</string>
+
+    <string name="title_activity_customer_home">CustomerHomeActivity</string>
+    <string name="title_activity_make_reservation">MakeReservationActivity</string>
+    <string name="title_activity_transaction">TransactionActivity</string>
+    <string name="title_activity_checkout">CheckoutActivity</string>
+    <string name="title_activity_show_food_items">ShowFoodItemsActivity</string>
+    <string name="title_activity_show_transaction">ShowTransactionActivity</string>
+    <string name="title_activity_show_order">ShowOrderActivity</string>
+
 </resources>

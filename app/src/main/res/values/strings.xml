@@ -9,7 +9,7 @@
     <string name="prompt_phone">Phone</string>
     <string name="prompt_location">Location</string>
 
-
+    <!-- Login Messages -->
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -17,6 +17,15 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions." </string>
+
+    <!-- Table Info -->
+    <string name="prompt_seats">Seats</string>
+    <string name="add_T_button">Add Table</string>
+
+    <!-- FoodItem Info -->
+    <string name="prompt_FI_name">Food Name</string>
+    <string name="prompt_FI_description">Description</string>
+    <string name="add_FI_button">Add Food Item</string>
 
     <!-- Spinner (dropdown menu) Items -->
     <string-array name="city_list">
@@ -27,6 +36,26 @@
         <item>Winnipeg</item>
     </string-array>
 
+    <string-array name="item_type">
+        <item>Appetizer</item>
+        <item>Beverage</item>
+        <item>Meal</item>
+        <item>Dessert</item>
+    </string-array>
+
+    <string-array name="cuisine_type">
+        <item>Italian</item>
+        <item>Greek</item>
+        <item>Vietnamese</item>
+        <item>Mexican</item>
+        <item>Indian</item>
+        <item>Thai</item>
+        <item>French</item>
+        <item>Japanese</item>
+    </string-array>
+
     <!-- Activity Titles -->
     <string name="title_activity_signup">Account Signup</string>
+    <string name="title_activity_create_table">New Table</string>
+    <string name="title_activity_create_food_item">New Menu Item</string>
 </resources>

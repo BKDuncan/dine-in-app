@@ -33,6 +33,13 @@
     <string name="show_orders">Orders</string>
     <string name="show_fooditems">Food Menu</string>
 
+    <!-- Inspect Transaction -->
+    <string name="cost_hint">Subtotal:</string>
+    <string name="tip_hint">Tip:</string>
+    <string name="date_hint">Date:</string>
+    <string name="time_hint">Time:</string>
+    <string name="payment_type_hint">Payment Type:</string>
+
     <!-- Spinner (dropdown menu) Items -->
     <string-array name="city_list">
         <item>Calgary</item>
@@ -61,12 +68,12 @@
     </string-array>
 
     <string-array name="dummy_reservations">
-        <item>Bob Jones 6:15PM Table 7</item>
-        <item>Carl Walker 2 8:00PM Table 1</item>
-        <item>Jamie Fox 3 6:30PM Table 4</item>
-        <item>Doug T 4 6:15PM Table 8</item>
-        <item>JJ Abba 5 3:15PM Table 2</item>
-        <item>Lena Smith 6 1:00PM Table 22</item>
+        <item>Bob Jones 6:15PM</item>
+        <item>Carl Walker 2 8:00PM</item>
+        <item>Jamie Fox 3 6:55PM</item>
+        <item>Doug T 4 3:55PM </item>
+        <item>JJ Abba 3:00PM</item>
+        <item>Lena Smith 1:00PM</item>
     </string-array>
 
     <!-- Activity Titles -->
@@ -75,4 +82,5 @@
     <string name="title_activity_create_food_item">New Menu Item</string>
     <string name="title_activity_restaurant_home">Restaurant Home</string>
     <string name="title_activity_show_table_reservations">Table Reservations</string>
+    <string name="title_activity_show_transaction_detail">Transaction Detail</string>
 </resources>

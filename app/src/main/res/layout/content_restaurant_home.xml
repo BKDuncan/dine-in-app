@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_restaurant_home">
 
     <Button
-        android:id="@+id/orderButton"
+        android:id="@+id/order_menu_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="0.062" />
 
     <Button
-        android:id="@+id/tablesButton"
+        android:id="@+id/table_menu_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -35,11 +35,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orderButton"
+        app:layout_constraintTop_toBottomOf="@+id/order_menu_button"
         app:layout_constraintVertical_bias="0.154" />
 
     <Button
-        android:id="@+id/foodItemButton"
+        android:id="@+id/food_item_menu_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -50,11 +50,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tablesButton"
+        app:layout_constraintTop_toBottomOf="@+id/table_menu_button"
         app:layout_constraintVertical_bias="0.243" />
 
     <Button
-        android:id="@+id/transactionButton"
+        android:id="@+id/transaction_menu_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -65,7 +65,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/foodItemButton" />
+        app:layout_constraintTop_toBottomOf="@+id/food_item_menu_button" />
 
     <TextView
         android:id="@+id/textView3"

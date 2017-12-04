@@ -19,7 +19,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void setButtonListener(){
-        Button signup = (Button)this.findViewById(R.id.signupButton);
+        Button signup = (Button)this.findViewById(R.id.signup_button);
         signup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

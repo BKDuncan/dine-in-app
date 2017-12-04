@@ -91,6 +91,4 @@
     <string name="title_activity_show_food_items">ShowFoodItemsActivity</string>
     <string name="title_activity_show_transaction">ShowTransactionActivity</string>
     <string name="title_activity_show_order">ShowOrderActivity</string>
-
-
-
+</resources>

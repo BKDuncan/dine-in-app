@@ -1,8 +1,6 @@
 package com.example.bailey.dine_in_app;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -20,7 +18,7 @@ public class CreateTableActivity extends AppCompatActivity {
     }
 
     private void setButtonListener(){
-        Button createTable = (Button)this.findViewById(R.id.createTableButton);
+        Button createTable = (Button)this.findViewById(R.id.create_new_table_button);
         createTable.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

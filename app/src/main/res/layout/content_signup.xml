@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_signup">
 
     <Button
-        android:id="@+id/signupButton"
+        android:id="@+id/signup_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

@@ -103,7 +103,17 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                /*attemptLogin(); */ // TODO: Put login method back in, & move the intent to the callback
+                EditText passwordBox = (EditText) findViewById(R.id.password);
+
+                // Navigate to Customer or Restaurant Homepage
+                if(passwordBox.getText().length() == 0) {
+                    Intent customerHomeActivity = new Intent(MainActivity.this, CustomerHomeActivity.class);
+                    startActivity(customerHomeActivity);
+                } else{
+                    Intent restaurantHomeActivity = new Intent(MainActivity.this, RestaurantHomeActivity.class);
+                    startActivity(restaurantHomeActivity);
+                }
             }
         });
 
@@ -111,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         signupButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Navigate to Signup Page
                 Intent signupActivity = new Intent(MainActivity.this, SignupActivity.class);
                 startActivity(signupActivity);
             }
@@ -382,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
         try{
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            connectionURL = "jdbc:jtds:sqlserver://" + server + ";" + "databseName=" + db + ";user=" + user + ";password=" + pass + ";";
+            connectionURL = "jdbc:jtds:sqlserver://" + server + ";" + "databaseName=" + db + ";user=" + user + ";password=" + pass + ";";
             connection = DriverManager.getConnection(connectionURL);
 
         }catch(Exception e){

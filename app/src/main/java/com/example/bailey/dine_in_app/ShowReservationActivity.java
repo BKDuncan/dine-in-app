@@ -15,7 +15,7 @@ public class ShowReservationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reservation);
+        setContentView(R.layout.activity_show_reservation);
         setButtonListener1();
         setButtonListener2();
 

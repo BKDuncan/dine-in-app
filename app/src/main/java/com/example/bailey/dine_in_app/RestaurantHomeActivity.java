@@ -47,9 +47,9 @@ public class RestaurantHomeActivity extends AppCompatActivity {
         navigateTables.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                // TODO: ShowTables Activity
-//                Intent tablesActivity = new Intent(view.getContext(), ShowTablesActivity.class);
-//                startActivity(tablesActivity);
+
+                Intent tablesActivity = new Intent(view.getContext(), ShowTableListActivity.class);
+                startActivity(tablesActivity);
             }
         });
     }

@@ -19,7 +19,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_order);
         setButtonListener1();
-        setButtonListener2();
+
 
     }
     private void setButtonListener1(){
@@ -33,14 +33,6 @@ public class PlaceOrderActivity extends AppCompatActivity {
         });
     }
 
-    private void setButtonListener2(){
-        Button addToOrder = (Button)this.findViewById(R.id.checkout_button);
-        addToOrder.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                //TODO -- add logic for add to order button in place order activity
-            }
-        });
-    }
+
 
 }

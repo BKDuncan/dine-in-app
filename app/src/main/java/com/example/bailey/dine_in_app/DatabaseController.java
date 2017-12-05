@@ -33,10 +33,10 @@ public class DatabaseController {
      */
     private  Connection connection = null;
     //Initial Catalog=DB_A2F662_dining;User Id=DB_A2F662_dining_admin;Password=YOUR_DB_PASSWORD;
-    private final String USERNAME = "DB_A2F662_dining_admin", //"a2efef_dining" ,
+    private final String USERNAME = "DB_A2EFEF_dine_admin", //"a2efef_dining" ,
                          PASSWORD = "CPSC471Project" ,
-                         DB = "DB_A2F662_dining", //"db_a2efef_dining" ,
-                         SERVER = "SQL7003.site4now.net"; //"mysql7001.site4now.net" ;
+                         DB = "DB_A2EFEF_dine", //"db_a2efef_dining" ,
+                         SERVER = "sql7003.site4now.net"; //"mysql7001.site4now.net" ;
 
     public static DatabaseController getInstance(){
         if(instance == null)
@@ -66,6 +66,8 @@ public class DatabaseController {
         }catch(Exception e){
             Log.e("ERROR: ", "Connect Error: " + e.getMessage());
         }
+
+        Log.d("CONNECTED", "Success =" + attemptLogin("b@gmail.com", "b"));
     }
 
     /**
@@ -90,7 +92,7 @@ public class DatabaseController {
     public boolean attemptLogin(String email, String password){
         try {
             PreparedStatement prepStatement = connection.prepareStatement("SELECT * " +
-                    "FROM customer " +
+                    "FROM db_a2efef_dining.customer " +
                     "WHERE email = ? AND password = ?;");
             prepStatement.setString(1, email);
             prepStatement.setString(2, password);

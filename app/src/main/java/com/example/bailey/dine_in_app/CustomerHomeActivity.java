@@ -21,8 +21,8 @@ public class CustomerHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO: Make showReservationActivity
-                //Intent showReservationActivity = new Intent(CustomerHomeActivity.this, ShowReservationActivity.class)
-                // startActivity(showReservationActivity);
+                Intent showReservationActivity = new Intent(CustomerHomeActivity.this, ShowReservationActivity.class);
+                startActivity(showReservationActivity);
             }
         });
 
@@ -31,10 +31,10 @@ public class CustomerHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TODO: Make searchRestaurantActivity
-                // Intent searchRestaurantActivity = new Intent(CustomerHomeActivity.this, SearchRestaurantActivity.class);
-                // startActivity(searchRestaurantActivity);
-                Intent makeReservationActivity = new Intent(CustomerHomeActivity.this, MakeReservationActivity.class);
-                startActivity(makeReservationActivity);
+                 Intent searchRestaurantActivity = new Intent(CustomerHomeActivity.this, SearchRestaurantActivity.class);
+                 startActivity(searchRestaurantActivity);
+                //Intent makeReservationActivity = new Intent(CustomerHomeActivity.this, MakeReservationActivity.class);
+                //startActivity(makeReservationActivity);
             }
         });
     }

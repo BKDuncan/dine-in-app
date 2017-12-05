@@ -45,22 +45,11 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    // Connection Variables
-    Connection con;
-    String username,password,db,ip;
-
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -76,12 +65,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        username = "a2efef_dining";
-        password = "CPSC471Project";
-        db = "mysql7001.site4now.net";
-        ip = "db_a2efef_dining";
-
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -103,17 +86,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*attemptLogin(); */ // TODO: Put login method back in, & move the intent to the callback
-                EditText passwordBox = (EditText) findViewById(R.id.password);
-
-                // Navigate to Customer or Restaurant Homepage
-                if(passwordBox.getText().length() == 0) {
-                    Intent customerHomeActivity = new Intent(MainActivity.this, CustomerHomeActivity.class);
-                    startActivity(customerHomeActivity);
-                } else{
-                    Intent restaurantHomeActivity = new Intent(MainActivity.this, RestaurantHomeActivity.class);
-                    startActivity(restaurantHomeActivity);
-                }
+                attemptLogin();
             }
         });
 
@@ -234,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 0;
     }
 
     /**
@@ -328,8 +301,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
     }
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
+     * Uses a separate thread to try and login the user
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -343,25 +315,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
+                DatabaseController db = DatabaseController.getInstance();
+                db.connect();
+                return false; //db.attemptLogin(mEmail, mPassword);
         }
 
         @Override
@@ -371,6 +327,17 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
             if (success) {
                 finish();
+                if(DatabaseController.getInstance().get_logged_in_customer() != null) {
+                    // Navigate to Customer Homepage
+                    Intent customerHomeActivity = new Intent(MainActivity.this, CustomerHomeActivity.class);
+                    startActivity(customerHomeActivity);
+                } else if(DatabaseController.getInstance().get_logged_in_restaurant() != null){
+                    // Navigate to Restaurant Homepage
+                    Intent restaurantHomeActivity = new Intent(MainActivity.this, RestaurantHomeActivity.class);
+                    startActivity(restaurantHomeActivity);
+                } else{
+                    Log.e("ERROR", "Unexpected login result!");
+                }
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -383,24 +350,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
             showProgress(false);
         }
     }
-    //connection class
-    @SuppressLint("NewApi")
-    public Connection connectionclass (String user, String pass, String db, String server){
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        Connection connection = null;
-        String connectionURL = null;
 
-        try{
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            connectionURL = "jdbc:jtds:sqlserver://" + server + ";" + "databaseName=" + db + ";user=" + user + ";password=" + pass + ";";
-            connection = DriverManager.getConnection(connectionURL);
 
-        }catch(Exception e){
-            Log.e("Error: ", e.getMessage());
-        }
-
-        return connection;
-    }
 }
 

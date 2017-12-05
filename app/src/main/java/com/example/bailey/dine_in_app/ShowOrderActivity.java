@@ -17,15 +17,14 @@ public class ShowOrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_order);
         setButtonListeners();
     }
-
+    // set the show details button
     private void setButtonListeners() {
         Button showOrderDetail = (Button) this.findViewById(R.id.show_order_detail_button);
         showOrderDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: ShowOrderDetailActivity
-//                Intent showOrderDetailActivity = new Intent(view.getContext(), ShowOrderDetailActivity.class);
-//                startActivity(showOrderDetailActivity);
+                Intent showOrderDetailActivity = new Intent(view.getContext(), ShowOrderDetailActivity.class);
+                startActivity(showOrderDetailActivity);
             }
         });
     }

@@ -25,8 +25,8 @@ public class CreateFoodItem extends AppCompatActivity {
         createFoodItem.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-//                Intent backToMain = new Intent(view.getContext(), MainActivity.class);
-//                startActivity(backToMain);
+                Intent showFoodItem = new Intent(view.getContext(), ShowFoodItemsActivity.class);
+                startActivity(showFoodItem);
             }
         });
     }

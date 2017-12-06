@@ -2,7 +2,7 @@
     <string name="app_name">Dine-in-app</string>
 
     <!-- Customer Info -->
-    <string name="prompt_email">Email</string>
+    <string name="prompt_email">Email or R-ID</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_fname">First Name</string>
     <string name="prompt_lname">Last Name</string>

@@ -19,7 +19,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Total"
-        app:layout_constraintBottom_toTopOf="@+id/editText2"
+        app:layout_constraintBottom_toTopOf="@+id/username_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toEndOf="@+id/textView"
@@ -45,7 +45,7 @@
         android:layout_marginTop="84dp"
         android:text="TIp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        app:layout_constraintEnd_toStartOf="@+id/editText2"
+        app:layout_constraintEnd_toStartOf="@+id/username_tv"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
@@ -56,7 +56,7 @@
         android:layout_marginTop="104dp"
         android:text="Payment Type"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        app:layout_constraintEnd_toStartOf="@+id/editText4"
+        app:layout_constraintEnd_toStartOf="@+id/lname_tv"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <Button
@@ -89,7 +89,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/username_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -107,7 +107,7 @@
         app:layout_constraintVertical_bias="0.296" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/lname_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

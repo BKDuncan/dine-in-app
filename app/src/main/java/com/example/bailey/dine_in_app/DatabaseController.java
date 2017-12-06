@@ -32,11 +32,10 @@ public class DatabaseController {
      * Database Connection Constants
      */
     private  Connection connection = null;
-    //Initial Catalog=DB_A2F662_dining;User Id=DB_A2F662_dining_admin;Password=YOUR_DB_PASSWORD;
-    private final String USERNAME = "DB_A2EFEF_dine_admin", //"a2efef_dining" ,
+    private final String USERNAME = "DB_A2EFEF_dine_admin",
                          PASSWORD = "CPSC471Project" ,
-                         DB = "DB_A2EFEF_dine", //"db_a2efef_dining" ,
-                         SERVER = "sql7003.site4now.net"; //"mysql7001.site4now.net" ;
+                         DB = "DB_A2EFEF_dine",
+                         SERVER = "sql7003.site4now.net";
 
     public static DatabaseController getInstance(){
         if(instance == null)
@@ -149,6 +148,37 @@ public class DatabaseController {
             return true;
         } catch(SQLException e){
             Log.e("ERROR", "Signup Error: " + e.getMessage());
+        }
+        // Only get here if SQL Exception thrown, ie. the insert operation failed
+        return false;
+    }
+
+    public boolean add_food_item(String name, String meal_type, boolean is_available, String item_type, double price, String description){
+        try {
+            // Insert Food Item
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "INSERT INTO db_a2efef_dining.food_item " +
+                            "( name, meal_type, is_available, item_type, price, description ) " +
+                            "VALUES ( ?, ?, ?, ?, ?, ? ) ;");
+            prepStatement.setString(1, name);
+            prepStatement.setString(2, meal_type);
+            prepStatement.setBoolean(3, is_available);
+            prepStatement.setString(4, item_type);
+            prepStatement.setDouble(5, price);
+            prepStatement.setString(6, description);
+            prepStatement.executeUpdate();
+
+            // Insert ( Food_Item <---> Restuarant ) Relation
+            prepStatement = connection.prepareStatement(
+                    "INSERT INTO db_a2efef_dining.restaurant_has_food_item " +
+                            "( r_id, name ) " +
+                            "VALUES ( ?, ? ) ;");
+            prepStatement.setInt(1, Integer.parseInt(logged_in_restaurant.split(";")[0]));
+            prepStatement.setString(2, name);
+            prepStatement.executeUpdate();
+            return true;
+        } catch(SQLException e){
+            Log.e("ERROR", "Insert Food Error: " + e.getMessage());
         }
         // Only get here if SQL Exception thrown, ie. the insert operation failed
         return false;

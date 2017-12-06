@@ -25,6 +25,7 @@
     <!-- FoodItem Info -->
     <string name="prompt_FI_name">Food Name</string>
     <string name="prompt_FI_description">Description</string>
+    <string name="prompt_FI_price">Price</string>
     <string name="add_FI_button">Add Food Item</string>
 
     <!-- Restaurant Home Nav -->

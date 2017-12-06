@@ -1,10 +1,8 @@
 package com.example.bailey.dine_in_app;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,45 +12,44 @@ public class RestaurantHomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         setButtonListeners();
     }
 
-    private void setButtonListeners(){
-        Button navigateTransactions = (Button)this.findViewById(R.id.transactionButton);
+    public void setButtonListeners(){
+        Button navigateTransactions = (Button) findViewById(R.id.transaction_menu_button);
         navigateTransactions.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-//                Intent backToMain = new Intent(view.getContext(), MainActivity.class);
-//                startActivity(backToMain);
+                Intent transactionsActivity = new Intent(view.getContext(), ShowTransactionActivity.class);
+                startActivity(transactionsActivity);
             }
         });
 
-        Button navigateFoodItems = (Button)this.findViewById(R.id.foodItemButton);
+        Button navigateFoodItems = (Button) findViewById(R.id.food_item_menu_button);
         navigateFoodItems.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-//                Intent backToMain = new Intent(view.getContext(), MainActivity.class);
-//                startActivity(backToMain);
+                Intent foodItemsActivity = new Intent(view.getContext(), ShowFoodItemsActivity.class);
+                startActivity(foodItemsActivity);
             }
         });
 
-        Button navigateOrders = (Button)this.findViewById(R.id.orderButton);
+        Button navigateOrders = (Button) findViewById(R.id.order_menu_button);
         navigateOrders.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-//                Intent backToMain = new Intent(view.getContext(), MainActivity.class);
-//                startActivity(backToMain);
+                Intent ordersActivity = new Intent(view.getContext(), ShowOrderActivity.class);
+                startActivity(ordersActivity);
             }
         });
 
-        Button navigateTables = (Button)this.findViewById(R.id.tablesButton);
+        Button navigateTables = (Button) findViewById(R.id.table_menu_button);
         navigateTables.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-//                Intent backToMain = new Intent(view.getContext(), MainActivity.class);
-//                startActivity(backToMain);
+
+                Intent tablesActivity = new Intent(view.getContext(), ShowTableListActivity.class);
+                startActivity(tablesActivity);
             }
         });
     }

@@ -4,8 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Dineinapp.iml" filepath="$PROJECT_DIR$/Dineinapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Bailey\AndroidStudioProjects\Dineinapp\dine-in-app.iml" filepath="C:\Users\Bailey\AndroidStudioProjects\Dineinapp\dine-in-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/jtds-1.3.1/jtds-1.3.1.iml" filepath="$PROJECT_DIR$/jtds-1.3.1/jtds-1.3.1.iml" />
-      <module fileurl="file://C:\Users\Anil Sood\AndroidStudioProjects\dine-in-app\jtds-1.3.1\jtds-1.3.1.iml" filepath="C:\Users\Anil Sood\AndroidStudioProjects\dine-in-app\jtds-1.3.1\jtds-1.3.1.iml" />
     </modules>
   </component>
 </project>

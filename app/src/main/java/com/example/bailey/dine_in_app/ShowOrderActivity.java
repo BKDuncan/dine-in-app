@@ -1,5 +1,6 @@
 package com.example.bailey.dine_in_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,20 +15,17 @@ public class ShowOrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_order);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setButtonListeners();
     }
-
+    // set the show details button
     private void setButtonListeners() {
-        Button showOrderDetail = (Button) this.findViewById(R.id.order_menu_button);
+        Button showOrderDetail = (Button) this.findViewById(R.id.show_order_detail_button);
         showOrderDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: ShowOrderDetailActivity
-//                Intent showOrderDetailActivity = new Intent(view.getContext(), ShowOrderDetailActivity.class);
-//                startActivity(showOrderDetailActivity);
+                Intent showOrderDetailActivity = new Intent(view.getContext(), ShowOrderDetailActivity.class);
+                startActivity(showOrderDetailActivity);
             }
         });
     }
-
 }

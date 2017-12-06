@@ -21,12 +21,12 @@ public class CreateFoodItem extends AppCompatActivity {
     }
 
     private void setButtonListener(){
-        Button createFoodItem = (Button)this.findViewById(R.id.createFoodItemButton);
+        Button createFoodItem = (Button)this.findViewById(R.id.add_food_item_button);
         createFoodItem.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-//                Intent backToMain = new Intent(view.getContext(), MainActivity.class);
-//                startActivity(backToMain);
+                Intent showFoodItem = new Intent(view.getContext(), ShowFoodItemsActivity.class);
+                startActivity(showFoodItem);
             }
         });
     }

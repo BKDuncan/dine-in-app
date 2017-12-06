@@ -60,7 +60,7 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:text=" " />
+                    android:text="" />
 
             </android.support.design.widget.TextInputLayout>
 

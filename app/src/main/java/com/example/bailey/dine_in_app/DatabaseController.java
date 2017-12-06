@@ -47,18 +47,13 @@ public class DatabaseController {
     /**
      * Attempt to connect to the database
      */
-    //@SuppressLint("NewApi")
     public void connect(){
-//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//        StrictMode.setThreadPolicy(policy);
-
         try{
-            //Class.forName("net.sourceforge.jtds.jdbc.Driver");
-//            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
             String connectionURL = "jdbc:jtds:sqlserver://" + SERVER + ";" + "databaseName=" + DB + ";user=" + USERNAME + ";password=" + PASSWORD + ";";
-//            String connectionURL = "jdbc:mysql://" + SERVER + "/" + DB;
             connection = DriverManager.getConnection(connectionURL);
-//            connection = DriverManager.getConnection(connectionURL, USERNAME, PASSWORD);
+
+            // Log Result
             if(connection == null)
                 Log.d("CONNECTION", "NOT CONNECTED");
             else
@@ -66,8 +61,6 @@ public class DatabaseController {
         }catch(Exception e){
             Log.e("ERROR: ", "Connect Error: " + e.getMessage());
         }
-
-        Log.d("CONNECTED", "Success =" + attemptLogin("b@gmail.com", "b"));
     }
 
     /**
@@ -81,6 +74,8 @@ public class DatabaseController {
         return logged_in_restaurant;
     }
 
+    public boolean is_connected(){ return connection != null; }
+
     public void logout(){
         logged_in_customer = null;
         logged_in_restaurant = null;
@@ -89,7 +84,7 @@ public class DatabaseController {
     /**
      * Queries
      */
-    public boolean attemptLogin(String email, String password){
+    public boolean attemptCustomerLogin(String email, String password){
         try {
             PreparedStatement prepStatement = connection.prepareStatement("SELECT * " +
                     "FROM db_a2efef_dining.customer " +
@@ -99,14 +94,63 @@ public class DatabaseController {
             ResultSet rs = prepStatement.executeQuery();
             // Iterate through results
             while(rs.next()){
-                logged_in_customer = rs.getString("firstName") + rs.getString("lastName");
+                // Customer info delimited by semicolons
+                logged_in_customer = rs.getString("email") + ";" + rs.getString("phone") + ";"
+                                   + rs.getString("location") + ";" + rs.getString("firstName") + ";"
+                                   + rs.getString("lastName") + ";" + rs.getString("password");
                 Log.d("CUSTOMER", logged_in_customer);
             }
-            if(logged_in_restaurant != null || logged_in_customer != null)
+            if(logged_in_customer != null)
                 return true;
         } catch(SQLException e){
             Log.e("ERROR", "Login Error: " + e.getMessage());
         }
+        return false;
+    }
+
+    public boolean attemptRestaurantLogin(int rid, String password){
+        try {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT * " +
+                    "FROM db_a2efef_dining.restaurant " +
+                    "WHERE r_id = ? AND password = ?;");
+            prepStatement.setInt(1, rid);
+            prepStatement.setString(2, password);
+            ResultSet rs = prepStatement.executeQuery();
+            // Iterate through results
+            while(rs.next()){
+                // All restaurant info delimited by semicolons
+                logged_in_restaurant = rs.getInt("r_id") +            ";" + rs.getString("name") +         ";"
+                                     + rs.getString("location") +     ";" + rs.getString("hours") +        ";"
+                                     + rs.getString("cuisine_type") + ";" + rs.getString("phone_number") + ";"
+                                     + rs.getString("password");
+                Log.d("RESTAURANT", logged_in_restaurant);
+            }
+            if(logged_in_restaurant != null)
+                return true;
+        } catch(SQLException e){
+            Log.e("ERROR", "Login Error: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean signup(String email, String phone, String location, String fname, String lname, String password){
+        try {
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "INSERT INTO db_a2efef_dining.customer " +
+                       "( email, phone, location, firstName, lastName, password ) " +
+                       "VALUES ( ?, ?, ?, ?, ?, ? ) ;");
+            prepStatement.setString(1, email);
+            prepStatement.setString(2, phone);
+            prepStatement.setString(3, location);
+            prepStatement.setString(4, fname);
+            prepStatement.setString(5, lname);
+            prepStatement.setString(6, password);
+            prepStatement.executeUpdate();
+            return true;
+        } catch(SQLException e){
+            Log.e("ERROR", "Signup Error: " + e.getMessage());
+        }
+        // Only get here if SQL Exception thrown, ie. the insert operation failed
         return false;
     }
 }

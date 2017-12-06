@@ -32,17 +32,17 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:text="@string/title_activity_create_food_item"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.018"
-        tools:text="@string/title_activity_create_food_item" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/editText7"
+        android:id="@+id/food_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -61,22 +61,22 @@
         app:layout_constraintVertical_bias="0.047" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/meal_type_spin"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:entries="@array/cuisine_type"
+        android:entries="@array/meal_type"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText7"
-        app:layout_constraintVertical_bias="0.098" />
+        app:layout_constraintTop_toBottomOf="@+id/food_name_tv"
+        app:layout_constraintVertical_bias="0.038" />
 
     <Spinner
-        android:id="@+id/spinner3"
+        android:id="@+id/food_type_spin"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
@@ -86,14 +86,13 @@
         android:entries="@array/item_type"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2"
-        app:layout_constraintVertical_bias="0.115" />
+        app:layout_constraintTop_toBottomOf="@+id/meal_type_spin"
+        app:layout_constraintVertical_bias="0.037" />
 
     <EditText
-        android:id="@+id/editText8"
-        android:layout_width="287dp"
+        android:id="@+id/food_desc_tv"
+        android:layout_width="251dp"
         android:layout_height="81dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -108,6 +107,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner3"
-        app:layout_constraintVertical_bias="0.324" />
+        app:layout_constraintTop_toBottomOf="@+id/food_item_price_tv"
+        app:layout_constraintVertical_bias="0.352" />
+
+    <EditText
+        android:id="@+id/food_item_price_tv"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/prompt_FI_price"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/food_type_spin"
+        app:layout_constraintVertical_bias="0.044" />
 </android.support.constraint.ConstraintLayout>

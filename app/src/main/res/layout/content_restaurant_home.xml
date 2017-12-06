@@ -20,7 +20,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/r_homepage_title"
         app:layout_constraintVertical_bias="0.062" />
 
     <Button
@@ -68,7 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/food_item_menu_button" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/r_homepage_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

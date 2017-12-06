@@ -4,12 +4,14 @@ package com.example.bailey.dine_in_app;
 import android.annotation.SuppressLint;
 import android.os.StrictMode;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Singleton Class for database connection
@@ -26,8 +28,28 @@ public class DatabaseController {
     private String logged_in_customer ,
                    logged_in_restaurant ,
                    selected_restaurant ,
-                   selected_reservation ;
+                   selected_reservation ,
+                    selected_cuisineType,
+                    selected_city,
+                    searched_Restaurant,
+                    reserved_Restaurant;
 
+    public void setSelectedCuisineType(String cT)
+    {
+        selected_cuisineType = cT;
+    }
+
+    public void setSelectedCity(String c)
+    {
+        selected_city = c;
+    }
+
+    public void setSearchedRestaurant(String r)
+    {
+        searched_Restaurant = r;
+    }
+
+    public void setSelectedRestaurant(String s){selected_restaurant = s;}
     /**
      * Database Connection Constants
      */
@@ -59,14 +81,19 @@ public class DatabaseController {
 //            String connectionURL = "jdbc:mysql://" + SERVER + "/" + DB;
             connection = DriverManager.getConnection(connectionURL);
 //            connection = DriverManager.getConnection(connectionURL, USERNAME, PASSWORD);
-            if(connection == null)
+            if(connection == null) {
                 Log.d("CONNECTION", "NOT CONNECTED");
-            else
+                //return false;
+            }
+                else {
                 Log.d("CONNECTION", "CONNECTED");
+                //return true;
+            }
         }catch(Exception e){
             Log.e("ERROR: ", "Connect Error: " + e.getMessage());
+            e.printStackTrace();
         }
-
+        //return false;
         Log.d("CONNECTED", "Success =" + attemptLogin("b@gmail.com", "b"));
     }
 
@@ -108,5 +135,162 @@ public class DatabaseController {
             Log.e("ERROR", "Login Error: " + e.getMessage());
         }
         return false;
+    }
+
+    /**
+     * Query to retrieve cuisine types for the the search restaurant cuisine type spinner
+     */
+    public ArrayList<String> getCuisineTypeList()
+    {
+        ArrayList<String> temp = new ArrayList<>();
+        try
+        {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT DISTINCT cuisine_type " +
+                    "FROM db_a2efef_dining.restaurant;");
+            ResultSet rs = prepStatement.executeQuery();
+            // Iterate through results
+            while(rs.next())
+            {
+                temp.add(rs.getString("cuisine_type"));
+            }
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "Cuisine Type List" + e.getMessage());
+        }
+        return temp;
+    }
+
+    public ArrayList<String> getCityList()
+    {
+        ArrayList<String> temp = new ArrayList<>();
+        try
+        {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT DISTINCT location " +
+                    "FROM db_a2efef_dining.restaurant;");
+            ResultSet rs = prepStatement.executeQuery();
+            // Iterate through results
+            while(rs.next())
+            {
+                temp.add(rs.getString("location"));
+            }
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "City List" + e.getMessage());
+        }
+        return temp;
+    }
+
+    public ArrayList<String> getRestaurantList()
+    {
+        ArrayList<String> temp = new ArrayList<>();
+        try
+        {
+            if(searched_Restaurant.equals("Search"))
+            {
+                searched_Restaurant = "";
+            }
+            searched_Restaurant = "%" + searched_Restaurant + "%";
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT name " +
+                    "FROM db_a2efef_dining.restaurant "+
+                    "WHERE name LIKE ? AND cuisine_type = ? AND location = ?;");
+            prepStatement.setString(1, searched_Restaurant);
+            prepStatement.setString(2, selected_cuisineType);
+            prepStatement.setString(3, selected_city);
+            ResultSet rs = prepStatement.executeQuery();
+
+            // Iterate through results
+            while(rs.next())
+            {
+                temp.add(rs.getString("name"));
+            }
+
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "Restaurant List" + e.getMessage());
+        }
+        return temp;
+    }
+
+    public ArrayList<String> getMealTypeList()
+    {
+        //TODO -- Remove this line
+        reserved_Restaurant = "4";
+        ArrayList<String> temp = new ArrayList<>();
+        try
+        {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT DISTINCT meal_type " +
+                    "FROM db_a2efef_dining.food_item as F, db_a2efef_dining.restaurant_has_food_item as R "+
+                    "WHERE r_id = ? AND F.name = R.name ");
+            prepStatement.setString(1, reserved_Restaurant);
+
+            ResultSet rs = prepStatement.executeQuery();
+            // Iterate through results
+            while(rs.next())
+            {
+                temp.add(rs.getString("meal_type"));
+            }
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "Meal Type List" + e.getMessage());
+        }
+        return temp;
+    }
+
+    public ArrayList<String> getItemTypeList()
+    {
+        //TODO -- Remove this line
+        reserved_Restaurant = "4";
+        ArrayList<String> temp = new ArrayList<>();
+        try
+        {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT DISTINCT item_type " +
+                    "FROM db_a2efef_dining.food_item as F, db_a2efef_dining.restaurant_has_food_item as R "+
+                    "WHERE r_id = ? AND F.name = R.name ");
+            prepStatement.setString(1, reserved_Restaurant);
+
+            ResultSet rs = prepStatement.executeQuery();
+            // Iterate through results
+            while(rs.next())
+            {
+                temp.add(rs.getString("item_type"));
+            }
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "Item Type List" + e.getMessage());
+        }
+        return temp;
+    }
+
+    public ArrayList<String> getFoodItemsList(String mealType, String itemType)
+    {
+        ArrayList<String> temp = new ArrayList<>();
+        try
+        {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT F.name " +
+                    "FROM db_a2efef_dining.food_item as F, db_a2efef_dining.restaurant_has_food_item as R "+
+                    "WHERE r_id = ? AND F.name = R.name AND F.item_type = ? AND F.mealType = ?;");
+            prepStatement.setString(1, searched_Restaurant);
+            prepStatement.setString(2, mealType);
+            prepStatement.setString(3, itemType);
+            ResultSet rs = prepStatement.executeQuery();
+
+            // Iterate through results
+            while(rs.next())
+            {
+                temp.add(rs.getString("name"));
+            }
+
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "Food Items List" + e.getMessage());
+        }
+        return temp;
+
     }
 }

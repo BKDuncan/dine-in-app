@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Singleton Class for database connection
@@ -183,4 +184,39 @@ public class DatabaseController {
         // Only get here if SQL Exception thrown, ie. the insert operation failed
         return false;
     }
+
+
+
+    public boolean make_reservation(String date, String time, Integer numOfSeats){
+        try{
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "INSERT INTO db_a2efef_dining.reservation" +
+                            "(reservation_id, r_id, table_number, email, date, time ) " +
+                            "VALUES ( 2, 1, ?, 'b@gmail.com', ?, '11:11:11 PM') ;");
+            prepStatement.setString(1, numOfSeats.toString());
+            prepStatement.setString(2,date);
+            //prepStatement.setString(6,time);
+            prepStatement.executeUpdate();
+
+            return true;
+        }catch (SQLException e){
+            Log.e("ERROR", "Error: " + e.getMessage());
+        }
+        return false;
+    }
+    /*
+    public boolean show_food_items(){
+
+        ArrayList<String> temp = new ArrayList<>();
+
+        try{
+
+
+
+        }catch (SQLException e){
+            Log.e("ERROR", "Error: " + e.getMessage());
+        }
+        return false;
+    }
+    */
 }

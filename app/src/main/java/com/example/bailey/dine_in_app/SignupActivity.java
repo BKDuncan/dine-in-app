@@ -3,11 +3,7 @@ package com.example.bailey.dine_in_app;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +34,7 @@ public class SignupActivity extends AppCompatActivity {
         first_text = this.findViewById(R.id.fname_tv);
         last_text = this.findViewById(R.id.lname_tv);
         password_text = this.findViewById(R.id.password_tv);
-        phone_text = this.findViewById(R.id.phone_tv);
+        phone_text = this.findViewById(R.id.numOfSeat_tv);
         city_spinner = this.findViewById(R.id.city_spin);
     }
 

@@ -26,9 +26,9 @@ public class CreateFoodItem extends AppCompatActivity {
         setContentView(R.layout.activity_create_food_item);
         setButtonListener();
 
-        name = findViewById(R.id.food_name_tv);
+        name = findViewById(R.id.date_tv);
         price = findViewById(R.id.food_item_price_tv);
-        description = findViewById(R.id.food_desc_tv);
+        description = findViewById(R.id.time_tv);
         meal_type = findViewById(R.id.meal_type_spin);
         food_type = findViewById(R.id.food_type_spin);
 

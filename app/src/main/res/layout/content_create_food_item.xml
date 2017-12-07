@@ -42,7 +42,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/food_name_tv"
+        android:id="@+id/date_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -72,7 +72,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/food_name_tv"
+        app:layout_constraintTop_toBottomOf="@+id/date_tv"
         app:layout_constraintVertical_bias="0.038" />
 
     <Spinner
@@ -91,7 +91,7 @@
         app:layout_constraintVertical_bias="0.037" />
 
     <EditText
-        android:id="@+id/food_desc_tv"
+        android:id="@+id/time_tv"
         android:layout_width="251dp"
         android:layout_height="81dp"
         android:layout_marginBottom="8dp"

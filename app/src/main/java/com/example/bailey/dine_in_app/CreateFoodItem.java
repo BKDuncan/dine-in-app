@@ -81,10 +81,8 @@ public class CreateFoodItem extends AppCompatActivity {
             foodTask = null;
 
             if (success) {
-                finish();
                 Toast.makeText(CreateFoodItem.this.getBaseContext(), "Food Added Successfully", Toast.LENGTH_LONG).show();
-                Intent showFoodItem = new Intent(CreateFoodItem.this, ShowFoodItemsActivity.class);
-                startActivity(showFoodItem);
+                finish();
             } else {
                 Toast.makeText(CreateFoodItem.this.getBaseContext(), "Add Food Item Failed!!!", Toast.LENGTH_LONG).show();
             }

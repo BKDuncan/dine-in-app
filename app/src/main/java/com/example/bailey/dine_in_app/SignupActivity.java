@@ -18,21 +18,31 @@ public class SignupActivity extends AppCompatActivity {
 
     private UserSignupTask signupTask = null;
 
+    /**
+     * Components
+     */
+    private EditText email_text;
+    private EditText first_text;
+    private EditText last_text;
+    private EditText password_text;
+    private EditText phone_text;
+    private Spinner city_spinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         setButtonListener();
+
+        email_text = this.findViewById(R.id.username_tv);
+        first_text = this.findViewById(R.id.fname_tv);
+        last_text = this.findViewById(R.id.lname_tv);
+        password_text = this.findViewById(R.id.password_tv);
+        phone_text = this.findViewById(R.id.phone_tv);
+        city_spinner = this.findViewById(R.id.city_spin);
     }
 
     private void setButtonListener(){
-        EditText email_text = this.findViewById(R.id.username_tv);
-        EditText first_text = this.findViewById(R.id.fname_tv);
-        EditText last_text = this.findViewById(R.id.lname_tv);
-        EditText password_text = this.findViewById(R.id.password_tv);
-        EditText phone_text = this.findViewById(R.id.phone_tv);
-        Spinner city_spinner = this.findViewById(R.id.city_spin);
-
         Button signup = (Button)this.findViewById(R.id.signup_button);
         signup.setOnClickListener(new View.OnClickListener(){
             @Override

@@ -4,11 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,8 +13,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.sql.Date;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -44,7 +38,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         setButtonListener();
 
-        email_text = this.findViewById(R.id.username_tv);
+        email_text = this.findViewById(R.id.transaction_tip);
         first_text = this.findViewById(R.id.fname_tv);
         last_text = this.findViewById(R.id.lname_tv);
         password_text = this.findViewById(R.id.password_tv);

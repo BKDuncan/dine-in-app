@@ -42,6 +42,11 @@
     <string name="time_hint">Time:</string>
     <string name="payment_type_hint">Payment Type:</string>
 
+
+    <!-- Transaction -->
+    <string name="transaction_pay_button">Pay Now</string>
+    <string name="transaction_cancel_button">Cancel</string>
+
     <!-- Order Detail -->
     <string name="order_hint">Order Number:</string>
     <string name="special_request_hint">Special Request:</string>
@@ -86,6 +91,14 @@
         <item>Dinner</item>
         <item>Brunch</item>
         <item>All</item>
+    </string-array>
+
+    <string-array name="payment_type">
+        <item>Mastercard</item>
+        <item>Paypal</item>
+        <item>Visa</item>
+        <item>Bitcoin</item>
+        <item>Amex</item>
     </string-array>
 
     <!-- Activity Titles -->

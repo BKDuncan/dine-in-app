@@ -76,7 +76,7 @@ public class MakeReservationActivity extends AppCompatActivity {
             this.time = time;
             this.date = date;
             this.numOfSeats = numOfSeats;
-            Toast.makeText(MakeReservationActivity.this.getBaseContext(), time.toString() + " " + date.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(MakeReservationActivity.this.getBaseContext(), time.toString() + " " + date.toString(), Toast.LENGTH_LONG).show();
 
 
         }

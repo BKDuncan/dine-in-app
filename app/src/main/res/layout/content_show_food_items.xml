@@ -51,33 +51,18 @@
 
     <ListView
         android:id="@+id/foodlist"
-        android:layout_width="368dp"
-        android:layout_height="367dp"
+        android:layout_width="350dp"
+        android:layout_height="356dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:choiceMode="singleChoice"
+        android:listSelector="#666666"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView11"
-        app:layout_constraintVertical_bias="0.285" />
-
-    <Button
-        android:id="@+id/refresh"
-        android:layout_width="71dp"
-        android:layout_height="35dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/foodlist"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.328" />
 
 </android.support.constraint.ConstraintLayout>

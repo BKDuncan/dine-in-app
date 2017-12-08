@@ -2,9 +2,12 @@ package com.example.bailey.dine_in_app;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -615,14 +618,14 @@ public class DatabaseController {
     }
 
 
-
+    // makes a reservation
     public boolean make_reservation(String date, String time, Integer numOfSeats){
         Integer tableNumber = 0;
         try{
             PreparedStatement prepStatement = connection.prepareStatement(
                     "SELECT Top 1 T.table_number " +
                     "FROM [db_a2efef_dining].[table] T " +
-            "WHERE T.seats >= ? AND T.is_available = '1' AND " +
+            "WHERE T.seats >= ? AND T.is_available = '1' AND T.r_id = 4 AND " +
             "NOT EXISTS ( SELECT * " +
                     "FROM [db_a2efef_dining].[reservation] R " +
             "WHERE T.r_id = R.r_id AND R.table_number = T.table_number " +
@@ -659,17 +662,109 @@ public class DatabaseController {
         return false;
     }
 
+    // show food items for restaurants
+    public ArrayList<String> show_food_items(Integer r_id){
 
-    public boolean show_food_items(){
 
         ArrayList<String> temp = new ArrayList<>();
 
         try{
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "SELECT F.name " +
+                    "FROM [db_a2efef_dining].[restaurant_has_food_item] R JOIN [db_a2efef_dining].[food_item] F ON R.name = F.name " +
+                    "WHERE R.r_id = ?; "
+            );
+            prepStatement.setString(1,logged_in_restaurant.split(";")[0]);
 
+            ResultSet rs = prepStatement.executeQuery();
 
+            while(rs.next()){
+                temp.add(rs.getString("name"));
+            }
 
         }catch (Exception e){
             Log.e("ERROR", "Error: " + e.getMessage());
+        }
+
+        return temp;
+    }
+
+    public boolean change_availability(String foodName, Context activity){
+        try{
+
+            Integer avail = 0;
+
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "SELECT is_available " +
+                    "FROM [db_a2efef_dining].[food_item] " +
+                    "WHERE name = ? "
+            );
+            prepStatement.setString(1,foodName);
+            ResultSet rs = prepStatement.executeQuery();
+
+
+            while (rs.next()){
+                avail = rs.getInt("is_available");
+            }
+
+
+
+
+            if(avail == 1){
+
+                PreparedStatement prepStatement1 = connection.prepareStatement(
+                        "UPDATE [db_a2efef_dining].[food_item] " +
+                        "SET is_available = 0 " +
+                        "WHERE name = ? ;"
+                );
+                prepStatement1.setString(1,foodName);
+                prepStatement1.executeUpdate();
+
+                Handler mainHandler = new Handler(activity.getMainLooper());
+
+                Runnable myRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(activity,"Changed to Unavailable",Toast.LENGTH_SHORT).show();
+
+                    }
+                };
+
+                mainHandler.post(myRunnable);
+
+
+
+            }
+            else{
+
+                PreparedStatement prepStatement2 = connection.prepareStatement(
+                        "UPDATE [db_a2efef_dining].[food_item] " +
+                                "SET is_available = 1 " +
+                                "WHERE name = ? ;"
+                );
+                prepStatement2.setString(1,foodName);
+                prepStatement2.executeUpdate();
+
+                Handler mainHandler = new Handler(activity.getMainLooper());
+
+                Runnable myRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(activity,"Changed to Available",Toast.LENGTH_SHORT).show();
+
+                    }
+                };
+
+                mainHandler.post(myRunnable);
+
+
+
+            }
+
+            return true;
+        }catch (SQLException e){
+            Log.e("ERROR", "Error: " + e.getMessage());
+
         }
         return false;
     }

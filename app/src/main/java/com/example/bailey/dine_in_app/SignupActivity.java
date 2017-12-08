@@ -42,7 +42,7 @@ public class SignupActivity extends AppCompatActivity {
         first_text = this.findViewById(R.id.fname_tv);
         last_text = this.findViewById(R.id.lname_tv);
         password_text = this.findViewById(R.id.password_tv);
-        phone_text = this.findViewById(R.id.phone_tv);
+        phone_text = this.findViewById(R.id.numOfSeat_tv);
         city_spinner = this.findViewById(R.id.city_spin);
     }
 

@@ -1,16 +1,21 @@
 package com.example.bailey.dine_in_app;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
 
 
 public class ShowTableListActivity extends AppCompatActivity {
+    PopulateTableList populateList = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +24,11 @@ public class ShowTableListActivity extends AppCompatActivity {
         setButtonListener2();
         setButtonListener3();
         setButtonListener4();
-
+        if(populateList == null)
+        {
+            populateList = new PopulateTableList();
+            populateList.execute((Void) null);
+        }
     }
     private void setButtonListener1(){
         Button returnButton = (Button)this.findViewById(R.id.return_button);
@@ -61,4 +70,23 @@ public class ShowTableListActivity extends AppCompatActivity {
         });
     }
 
+    public class PopulateTableList extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            DatabaseController db = DatabaseController.getInstance();
+            db.connect();
+            ArrayList<TableListInfo> tablesList = db.getTableList();
+            final TableListAdapter adapter = new TableListAdapter(ShowTableListActivity.this, R.layout.show_table_adapter_layout, tablesList);
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ListView listView = (ListView) ShowTableListActivity.this.findViewById(R.id.table_list);
+                    listView.setAdapter(adapter);
+                }
+            });
+            ShowTableListActivity.this.populateList = null;
+            return null;
+        }
+    }
 }

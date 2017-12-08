@@ -4,46 +4,97 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Anil Sood on 11/30/2017.
+ */
 
 public class ShowOrderDetailActivity extends AppCompatActivity {
 
-    // Text Views to Populate
-    private TextView order_number;
-    private TextView date;
-    private TextView time;
-    private TextView special_request;
-    private TextView is_served;
-    private TextView total;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*** REMOVE BLUE STATUS BAR **/
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_order_detail);
-        order_number = findViewById(R.id.detail_order_number);
-        date = findViewById(R.id.detail_order_date);
-        time = findViewById(R.id.detail_order_time);
-        special_request = findViewById(R.id.detail_order_special_request);
-        is_served = findViewById(R.id.detail_order_is_served);
-        total = findViewById(R.id.detail_order_price);
+        setButtonListener();
+        NetworkTasks n = new NetworkTasks();
+        n.execute((Void) null);
+    }
 
-        ArrayList<String> order_details = DatabaseController.getInstance().getOrderDetail();
-        order_number.setText(order_details.get(0));
-        date.setText(order_details.get(1));
-        time.setText(order_details.get(2));
-        special_request.setText(order_details.get(3));
-        is_served.setText((order_details.get(4).matches("1"))?"Served":"In Progress");
-        total.setText(order_details.get(5));
+    private void setButtonListener(){
+        Button search = (Button)this.findViewById(R.id.order_served_button);
+        search.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                ServeOrder o = new ServeOrder();
+                o.execute((Void) null);
+            }
+        });
+    }
+
+    public class ServeOrder extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            DatabaseController db = DatabaseController.getInstance();
+            db.connect();
+            db.serveOrder();
+            NetworkTasks n = new NetworkTasks();
+            n.execute((Void) null);
+            return null;
+        }
+    }
+
+    public class NetworkTasks extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            DatabaseController db = DatabaseController.getInstance();
+            db.connect();
+            final ArrayList<String> orderDetail = db.getOrderDetail();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView order_number = (TextView)  ShowOrderDetailActivity.this.findViewById(R.id.order_number_text);
+                    order_number.setText(orderDetail.get(0));
+
+                    TextView date = (TextView)  ShowOrderDetailActivity.this.findViewById(R.id.date_text);
+                    date.setText(orderDetail.get(1));
+
+                    TextView time = (TextView)  ShowOrderDetailActivity.this.findViewById(R.id.time_text);
+                    time.setText(orderDetail.get(2));
+
+                    TextView special = (TextView)  ShowOrderDetailActivity.this.findViewById(R.id.special_request_text);
+                    special.setText(orderDetail.get(3));
+
+                    TextView served = (TextView)  ShowOrderDetailActivity.this.findViewById(R.id.is_served_text);
+                    if(orderDetail.get(4).equals("0"))
+                    {
+                        served.setText("no");
+                    }
+                    else
+                    {
+                        served.setText("yes");
+                        Button servedButton = (Button) ShowOrderDetailActivity.this.findViewById(R.id.order_served_button);
+                        servedButton.setVisibility(View.GONE);
+                    }
+
+                    TextView price = (TextView)  ShowOrderDetailActivity.this.findViewById(R.id.total_price_text);
+                    price.setText(orderDetail.get(5));
+                }
+            });
+
+            return null;
+        }
     }
 
 }

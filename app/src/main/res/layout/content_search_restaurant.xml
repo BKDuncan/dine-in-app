@@ -14,11 +14,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
-        android:entries="@array/cuisine_type"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_table_seats" />
+        app:layout_constraintTop_toBottomOf="@+id/restaurant_name_textbox" />
 
     <Spinner
         android:id="@+id/city_spinner"
@@ -27,14 +27,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
-        android:entries="@array/city_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cusisine_type_spinner" />
 
     <EditText
-        android:id="@+id/new_table_seats"
+        android:id="@+id/restaurant_name_textbox"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"

@@ -13,9 +13,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-/**
- * Created by Anil Sood on 11/30/2017.
- */
 
 public class ShowTableListActivity extends AppCompatActivity {
     PopulateTableList populateList = null;
@@ -48,7 +45,6 @@ public class ShowTableListActivity extends AppCompatActivity {
         availability.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                //TODO -- add logic for the change availability in the show table activity
             }
         });
     }

@@ -16,17 +16,16 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
+        android:text="@string/add_T_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.881"
-        tools:text="@string/add_T_button" />
+        app:layout_constraintVertical_bias="0.881" />
 
     <EditText
-        android:id="@+id/restaurant_name_textbox"
-        android:layout_width="wrap_content"
+        android:id="@+id/new_table_seats"
+        android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -35,10 +34,13 @@
         android:ems="10"
         android:hint="@string/prompt_seats"
         android:inputType="number"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/create_new_table_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.189" />
 
     <TextView
         android:id="@+id/textView"
@@ -55,4 +57,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.04" />
+
+    <CheckBox
+        android:id="@+id/table_available_for_res_checkbox"
+        android:layout_width="299dp"
+        android:layout_height="94dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/available"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/create_new_table_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_table_seats"
+        app:layout_constraintVertical_bias="0.38" />
 </android.support.constraint.ConstraintLayout>

@@ -10,16 +10,16 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class ShowFoodItemsActivity extends AppCompatActivity {
-    //private showFoodItemsTask showFoodItemsTask1 = null;
+    private showFoodItemsTask showFoodItemsTask1 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_food_items);
         setButtonListeners();
-        //setButtonListeners1();
-        //showFoodItemsTask n = new showFoodItemsTask();
-        //n.execute((void)null);
+        setButtonListeners1();
+        showFoodItemsTask n = new showFoodItemsTask();
+        n.execute((Void)null);
     }
 
     private void setButtonListeners() {
@@ -33,7 +33,7 @@ public class ShowFoodItemsActivity extends AppCompatActivity {
         });
     }
 
-/*
+
     private void setButtonListeners1() {
         Button refresh = (Button) findViewById(R.id.refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
@@ -51,20 +51,28 @@ public class ShowFoodItemsActivity extends AppCompatActivity {
 
 
 
-    public class showFoodItemsTask extends AsyncTask<Void, Void, void> {
+    public class showFoodItemsTask extends AsyncTask<Void, Void, Void> {
 
 
         @Override
-        protected void doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
             DatabaseController db = DatabaseController.getInstance();
             if(!db.is_connected())
                 db.connect();
 
-            final ArrayAdapter<String> fooditemAdapter = new ArrayAdapter<String>(ShowFoodItemsActivity.this, R.layout.);
+            final ArrayAdapter<String> fooditemAdapter = new ArrayAdapter<String>(ShowFoodItemsActivity.this, R.layout.support_simple_spinner_dropdown_item);
             db.show_food_items();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            });
+            return null;
+
         }
 
 
     }
-    */
+
 }

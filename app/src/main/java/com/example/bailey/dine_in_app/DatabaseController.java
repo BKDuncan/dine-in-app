@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.sql.Time;
 
 /**
  * Singleton Class for database connection
@@ -188,15 +190,40 @@ public class DatabaseController {
 
 
     public boolean make_reservation(String date, String time, Integer numOfSeats){
+        Integer tableNumber = 0;
         try{
             PreparedStatement prepStatement = connection.prepareStatement(
-                    "INSERT INTO db_a2efef_dining.reservation" +
-                            "(reservation_id, r_id, table_number, email, date, time ) " +
-                            "VALUES ( 2, 1, ?, 'b@gmail.com', ?, '11:11:11 PM') ;");
+                    "SELECT Top 1 T.table_number " +
+                    "FROM [db_a2efef_dining].[table] T " +
+            "WHERE T.seats >= ? AND T.is_available = '1' AND " +
+            "NOT EXISTS ( SELECT * " +
+                    "FROM [db_a2efef_dining].[reservation] R " +
+            "WHERE T.r_id = R.r_id AND R.table_number = T.table_number " +
+            "AND  DATEDIFF(DAY, R.date, ?) = '0' " +
+            "AND ABS(DATEDIFF(HOUR, R.time, ?)) < '1' ); "
+            );
             prepStatement.setString(1, numOfSeats.toString());
-            prepStatement.setString(2,date);
-            //prepStatement.setString(6,time);
-            prepStatement.executeUpdate();
+            prepStatement.setString(2, date);
+            prepStatement.setString(3,time);
+
+
+            ResultSet rs = prepStatement.executeQuery();
+
+            while(rs.next()){
+                tableNumber = rs.getInt("table_number");
+            }
+
+
+
+            PreparedStatement prepStatement1 = connection.prepareStatement(
+                    "INSERT INTO db_a2efef_dining.reservation" +
+                            "(r_id, table_number, email, date, time ) " +
+                            "VALUES (4, ?, 'b@gmail.com', ?, ?) ;");
+            prepStatement1.setString(1, tableNumber.toString());
+            prepStatement1.setString(2, date);
+            prepStatement1.setString(3,time);
+            prepStatement1.executeUpdate();
+
 
             return true;
         }catch (SQLException e){
@@ -204,7 +231,8 @@ public class DatabaseController {
         }
         return false;
     }
-    /*
+
+
     public boolean show_food_items(){
 
         ArrayList<String> temp = new ArrayList<>();
@@ -213,10 +241,10 @@ public class DatabaseController {
 
 
 
-        }catch (SQLException e){
+        }catch (Exception e){
             Log.e("ERROR", "Error: " + e.getMessage());
         }
         return false;
     }
-    */
+
 }

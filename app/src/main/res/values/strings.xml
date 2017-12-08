@@ -88,16 +88,6 @@
         <item>All</item>
     </string-array>
 
-    <!-- TODO: Remove dummy lists -->
-    <string-array name="dummy_reservations">
-        <item>Bob Jones 6:15PM</item>
-        <item>Carl Walker 2 8:00PM</item>
-        <item>Jamie Fox 3 6:55PM</item>
-        <item>Doug T 4 3:55PM </item>
-        <item>JJ Abba 3:00PM</item>
-        <item>Lena Smith 1:00PM</item>
-    </string-array>
-
     <!-- Activity Titles -->
     <string name="title_activity_signup">Account Signup</string>
     <string name="title_activity_create_table">New Table</string>

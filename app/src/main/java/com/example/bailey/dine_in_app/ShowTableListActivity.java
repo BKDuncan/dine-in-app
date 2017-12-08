@@ -9,9 +9,6 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
 
-/**
- * Created by Anil Sood on 11/30/2017.
- */
 
 public class ShowTableListActivity extends AppCompatActivity {
     @Override
@@ -39,7 +36,6 @@ public class ShowTableListActivity extends AppCompatActivity {
         availability.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                //TODO -- add logic for the change availability in the show table activity
             }
         });
     }

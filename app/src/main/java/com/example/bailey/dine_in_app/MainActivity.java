@@ -200,12 +200,10 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@") || email.matches("^\\d+$");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 0;
     }
 

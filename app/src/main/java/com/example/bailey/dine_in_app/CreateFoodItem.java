@@ -35,15 +35,30 @@ public class CreateFoodItem extends AppCompatActivity {
     }
 
     private void setButtonListener(){
-        Button createFoodItem = (Button)this.findViewById(R.id.add_food_item_button);
+        Button createFoodItem = this.findViewById(R.id.add_food_item_button);
         createFoodItem.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                String f_name = name.getText().toString();
-                Double f_price = Double.parseDouble(price.getText().toString());
-                String f_description = description.getText().toString();
-                String f_food_type = food_type.getSelectedItem().toString();
-                String f_meal_type = meal_type.getSelectedItem().toString();
+                    String f_name = name.getText().toString();
+                    Double f_price = -1.0;
+                try { f_price = Double.parseDouble(price.getText().toString()); } catch(NumberFormatException e){}
+                    String f_description = description.getText().toString();
+                    String f_food_type = food_type.getSelectedItem().toString();
+                    String f_meal_type = meal_type.getSelectedItem().toString();
+
+                boolean invalid = false;
+                /*** ERROR CHECK ***/
+                if(f_name.length() < 1){
+                    name.setError("Required");
+                    invalid = true;
+                }
+                if(f_price < 0.01){
+                    price.setError("Invalid Price");
+                    invalid = true;
+                }
+                if(invalid)
+                    return;
+
                 // Execute insert operation on separate thread
                 foodTask = new CreateFoodTask(f_name, f_description, f_food_type, f_meal_type, f_price);
                 foodTask.execute();

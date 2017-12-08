@@ -20,7 +20,6 @@ public class CustomerHomeActivity extends AppCompatActivity {
         show_reservations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Make showReservationActivity
                 Intent showReservationActivity = new Intent(CustomerHomeActivity.this, ShowReservationActivity.class);
                 startActivity(showReservationActivity);
             }
@@ -30,7 +29,6 @@ public class CustomerHomeActivity extends AppCompatActivity {
         make_reservations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Make searchRestaurantActivity
                  Intent searchRestaurantActivity = new Intent(CustomerHomeActivity.this, SearchRestaurantActivity.class);
                  startActivity(searchRestaurantActivity);
                 //Intent makeReservationActivity = new Intent(CustomerHomeActivity.this, MakeReservationActivity.class);

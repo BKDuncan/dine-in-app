@@ -1,6 +1,5 @@
 package com.example.bailey.dine_in_app;
 
-// TODO: Fix spinners to reflect DB: brunch, etc
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

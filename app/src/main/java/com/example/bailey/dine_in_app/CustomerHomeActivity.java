@@ -4,12 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class CustomerHomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*** REMOVE BLUE STATUS BAR **/
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_home);
         addButtonListeners();
@@ -20,7 +26,6 @@ public class CustomerHomeActivity extends AppCompatActivity {
         show_reservations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: showReservationActivity
                 Intent showReservationActivity = new Intent(CustomerHomeActivity.this, ShowReservationActivity.class);
                 startActivity(showReservationActivity);
             }
@@ -30,7 +35,6 @@ public class CustomerHomeActivity extends AppCompatActivity {
         make_reservations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Make searchRestaurantActivity
                  Intent searchRestaurantActivity = new Intent(CustomerHomeActivity.this, SearchRestaurantActivity.class);
                  startActivity(searchRestaurantActivity);
                 //Intent makeReservationActivity = new Intent(CustomerHomeActivity.this, MakeReservationActivity.class);

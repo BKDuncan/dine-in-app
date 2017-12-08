@@ -10,7 +10,7 @@
     <string name="prompt_location">Location</string>
 
     <!-- Login Messages -->
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -21,6 +21,7 @@
     <!-- Table Info -->
     <string name="prompt_seats">Seats</string>
     <string name="add_T_button">Add Table</string>
+    <string name="available">Available for Reservation</string>
 
     <!-- FoodItem Info -->
     <string name="prompt_FI_name">Food Name</string>
@@ -41,8 +42,19 @@
     <string name="time_hint">Time:</string>
     <string name="payment_type_hint">Payment Type:</string>
 
+
+    <!-- Transaction -->
+    <string name="transaction_pay_button">Pay Now</string>
+    <string name="transaction_cancel_button">Cancel</string>
+
+    <!-- Order Detail -->
+    <string name="order_hint">Order Number:</string>
+    <string name="special_request_hint">Special Request:</string>
+    <string name="is_served_hint">Serve Status:</string>
+
     <!-- Spinner (dropdown menu) Items -->
     <string-array name="city_list">
+        <item>Select City</item>
         <item>Calgary</item>
         <item>Edmonton</item>
         <item>Vancouver</item>
@@ -53,7 +65,8 @@
     <string-array name="item_type">
         <item>Appetizer</item>
         <item>Beverage</item>
-        <item>Meal</item>
+        <item>Main</item>
+        <item>Special</item>
         <item>Dessert</item>
     </string-array>
 
@@ -65,16 +78,27 @@
         <item>Indian</item>
         <item>Thai</item>
         <item>French</item>
+        <item>Chinese</item>
+        <item>European</item>
         <item>Japanese</item>
+        <item>American</item>
+        <item>Tibetian</item>
     </string-array>
 
-    <string-array name="dummy_reservations">
-        <item>Bob Jones 6:15PM</item>
-        <item>Carl Walker 2 8:00PM</item>
-        <item>Jamie Fox 3 6:55PM</item>
-        <item>Doug T 4 3:55PM </item>
-        <item>JJ Abba 3:00PM</item>
-        <item>Lena Smith 1:00PM</item>
+    <string-array name="meal_type">
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+        <item>Brunch</item>
+        <item>All</item>
+    </string-array>
+
+    <string-array name="payment_type">
+        <item>Mastercard</item>
+        <item>Paypal</item>
+        <item>Visa</item>
+        <item>Bitcoin</item>
+        <item>Amex</item>
     </string-array>
 
     <!-- Activity Titles -->
@@ -93,19 +117,6 @@
     <string name="title_activity_show_transaction">ShowTransactionActivity</string>
     <string name="title_activity_show_order">ShowOrderActivity</string>
 
-
-    <string-array name="meal_type">
-        <item>Breakfast</item>
-        <item>Lunch</item>
-        <item>Dinner</item>
-    </string-array>
-
-
-    <string-array name="city">
-        <item>Select City</item>
-        <item>Calgary</item>
-        <item>Edmonton</item>
-    </string-array>
     <string name="title_activity_show_reservation_detail">ShowReservationDetailActivity</string>
     <string name="title_activity_place_order">PlaceOrderActivity</string>
     <string name="title_activity_search_restaurant_list">SearchRestaurantListActivity</string>

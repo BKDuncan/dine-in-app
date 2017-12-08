@@ -1,17 +1,17 @@
 package com.example.bailey.dine_in_app;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SignupActivity extends AppCompatActivity {
@@ -30,11 +30,15 @@ public class SignupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*** REMOVE BLUE STATUS BAR **/
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         setButtonListener();
 
-        email_text = this.findViewById(R.id.username_tv);
+        email_text = this.findViewById(R.id.transaction_tip);
         first_text = this.findViewById(R.id.fname_tv);
         last_text = this.findViewById(R.id.lname_tv);
         password_text = this.findViewById(R.id.password_tv);
@@ -53,7 +57,42 @@ public class SignupActivity extends AppCompatActivity {
                 String password = (password_text.getText().toString());
                 String phone = (phone_text.getText().toString());
                 String city = (city_spinner.getSelectedItem().toString());
-                // Execute insert on separate thread
+
+                boolean invalid = false;
+
+                /*** ERROR CHECK ***/
+                if(email.length() < 1 || !email.contains("@")){
+                    email_text.setError("This is not a valid E-Mail");
+                    invalid = true;
+                }
+                if(fname.length() < 1){
+                    first_text.setError("Required");
+                    invalid = true;
+                }
+                if(lname.length() < 1){
+                    last_text.setError("Required");
+                    invalid = true;
+                }
+                if(password.length() < 1){
+                    password_text.setError("Required");
+                    invalid = true;
+                }
+                if(phone.length() < 1){
+                    phone_text.setError("Required");
+                    invalid = true;
+                }
+                if(city.matches("Select City")){
+                    TextView errorText = (TextView)city_spinner.getSelectedView();
+                    errorText.setError("");
+                    errorText.setTextColor(Color.RED);
+                    errorText.setText("Required");
+                    invalid = true;
+                }
+
+                if( invalid )
+                    return;
+
+                // Execute on separate thread
                 signupTask = new UserSignupTask(email, phone, city, fname, lname, password);
                 signupTask.execute();
                 Toast.makeText(SignupActivity.this.getBaseContext(), "Please be patient while we set up your account...", Toast.LENGTH_LONG).show();

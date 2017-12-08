@@ -11,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -32,7 +34,12 @@ public class DatabaseController {
                     selected_cuisineType,
                     selected_city,
                     searched_Restaurant,
-                    reserved_Restaurant;
+                    reserved_Restaurant,
+                    order_added,
+                    order_number_detail,
+                    reservation_id_detail_order,
+                    selected_table;
+
 
     public void setSelectedCuisineType(String cT)
     {
@@ -50,6 +57,15 @@ public class DatabaseController {
     }
 
     public void setSelectedRestaurant(String s){selected_restaurant = s;}
+
+    public void setOrderAdded(String o ) {order_added = o;}
+
+    public void setOrderNumberDetail(String o ) {order_number_detail = o;}
+
+    public void setReservedRestaurant (String r) {reserved_Restaurant = r;}
+
+    public void setReservationIdDetailOrder (String i) {reservation_id_detail_order = i;}
+
     /**
      * Database Connection Constants
      */
@@ -216,8 +232,6 @@ public class DatabaseController {
 
     public ArrayList<String> getMealTypeList()
     {
-        //TODO -- Remove this line
-        reserved_Restaurant = "4";
         ArrayList<String> temp = new ArrayList<>();
         try
         {
@@ -273,10 +287,10 @@ public class DatabaseController {
         {
             PreparedStatement prepStatement = connection.prepareStatement("SELECT F.name " +
                     "FROM db_a2efef_dining.food_item as F, db_a2efef_dining.restaurant_has_food_item as R "+
-                    "WHERE r_id = ? AND F.name = R.name AND F.item_type = ? AND F.mealType = ?;");
-            prepStatement.setString(1, searched_Restaurant);
-            prepStatement.setString(2, mealType);
-            prepStatement.setString(3, itemType);
+                    "WHERE r_id = ? AND F.name = R.name AND F.item_type = ? AND F.meal_type = ?;");
+            prepStatement.setString(1, reserved_Restaurant);
+            prepStatement.setString(2, itemType);
+            prepStatement.setString(3, mealType);
             ResultSet rs = prepStatement.executeQuery();
 
             // Iterate through results
@@ -284,7 +298,6 @@ public class DatabaseController {
             {
                 temp.add(rs.getString("name"));
             }
-
         }
         catch(SQLException e)
         {
@@ -292,5 +305,240 @@ public class DatabaseController {
         }
         return temp;
 
+    }
+
+    void addNewOrder(ArrayList<String> foodItems)
+    {
+        try
+        {
+            PreparedStatement prepStatement = connection.prepareStatement("INSERT INTO [DB_A2EFEF_dine].[db_a2efef_dining].[order] "+
+            "(total_price, date, time, special_request, served) "+
+                    "OUTPUT Inserted.order_number "+
+                    "values (0.0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '', 0)");
+            ResultSet rs = prepStatement.executeQuery();
+            int order_number = 0;
+            // Iterate through results
+            while(rs.next())
+            {
+                order_number = rs.getInt("order_number");
+            }
+            double food_items_total = 0.0;
+            for(int i = 0; i < foodItems.size(); i++)
+            {
+                PreparedStatement prepStatement2 = connection.prepareStatement("INSERT INTO [DB_A2EFEF_dine].[db_a2efef_dining].[order_has_food_item] "+
+                        "values (?,?)");
+                prepStatement2.setInt(1, order_number);
+                prepStatement2.setString(2, foodItems.get(i));
+                prepStatement2.executeUpdate();
+
+                PreparedStatement prepStatement3 = connection.prepareStatement("SELECT price FROM [DB_A2EFEF_dine].[db_a2efef_dining].[food_item] "+
+                        "where name = ?");
+                prepStatement3.setString(1, foodItems.get(i));
+                ResultSet rs2 = prepStatement3.executeQuery();
+                while(rs2.next())
+                {
+                    food_items_total += rs2.getDouble("price");
+                }
+            }
+            PreparedStatement prepStatement4 = connection.prepareStatement("UPDATE [DB_A2EFEF_dine].[db_a2efef_dining].[order] "+
+                    "SET total_price = ? " +
+                    "WHERE order_number = ?");
+            prepStatement4.setDouble(1, food_items_total);
+            prepStatement4.setInt(2, order_number);
+            prepStatement4.executeUpdate();
+            this.setOrderAdded(Double.toString(order_number));
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "Add New Order" + e.getMessage() + e.getStackTrace() );
+            e.printStackTrace();
+        }
+
+    }
+
+    public ArrayList<String> getOrderList(String from, String to)
+    {
+        // TODO -- remove this static assignment
+        logged_in_restaurant = "4";
+        ArrayList<String> temp = new ArrayList<>();
+        // TODO -- if to and from is empty then it doesn't work
+        try
+        {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT DISTINCT O.order_number "+
+                    "FROM [DB_A2EFEF_dine].[db_a2efef_dining].[order] as O1, "+
+                    "[DB_A2EFEF_dine].[db_a2efef_dining].[restaurant_has_food_item] as R ,"+
+                    "[DB_A2EFEF_dine].[db_a2efef_dining].[order_has_food_item] as O "+
+                    "WHERE O.name = R.name AND R.r_id  = ? AND O1.order_number = O.order_number AND O1.date >= ? AND O1.date <= ?");
+            prepStatement.setInt(1, Integer.parseInt(logged_in_restaurant));
+            prepStatement.setString(2, from);
+            prepStatement.setString(3, to);
+            ResultSet rs = prepStatement.executeQuery();
+
+            // Iterate through results
+            while(rs.next())
+            {
+                temp.add(rs.getString("order_number"));
+            }
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "Get Order List" + e.getMessage());
+        }
+        return temp;
+    }
+
+    public ArrayList<String> getOrderDetail()
+    {
+
+        ArrayList<String> temp = new ArrayList<>();
+        try
+        {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT * "+
+                    "FROM [DB_A2EFEF_dine].[db_a2efef_dining].[order] "+
+                    "WHERE order_number = ?;");
+
+            prepStatement.setInt(1, Integer.parseInt(order_number_detail));
+            ResultSet rs = prepStatement.executeQuery();
+            // Iterate through results
+            while(rs.next())
+            {
+                temp.add(rs.getString("order_number"));
+                temp.add(rs.getString("date"));
+                temp.add(rs.getString("time"));
+                temp.add(rs.getString("special_request"));
+                temp.add(rs.getString("served"));
+                temp.add(rs.getString("total_price"));
+            }
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "Get Order List" + e.getMessage());
+        }
+        return temp;
+    }
+
+    public void serveOrder()
+    {
+        try
+        {
+            PreparedStatement prepStatement = connection.prepareStatement("UPDATE [DB_A2EFEF_dine].[db_a2efef_dining].[order] "+
+                    "SET served = 1 WHERE order_number = ?;");
+
+            prepStatement.setInt(1, Integer.parseInt(order_number_detail));
+            prepStatement.executeUpdate();
+            // Iterate through results
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "Serve Order" + e.getMessage());
+        }
+    }
+
+    public ArrayList<String> getReservationList()
+    {
+        //TODO -- remove this
+        logged_in_customer = "a@gmail.com;";
+
+        String customerEmail = logged_in_customer.split(";")[0];
+        ArrayList<String> temp = new ArrayList<>();
+        try
+        {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT * "+
+                    "FROM [DB_A2EFEF_dine].[db_a2efef_dining].[reservation] "+
+                    "WHERE email = ?;");
+            prepStatement.setString(1, customerEmail);
+            ResultSet rs = prepStatement.executeQuery();
+            // Iterate through results
+            while(rs.next())
+            {
+                temp.add(rs.getString("reservation_id") + "   " + rs.getString("email"));
+            }
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "Get Reservation List" + e.getMessage());
+        }
+        return temp;
+    }
+
+    public ArrayList<String> getReservationDetail()
+    {
+        ArrayList<String> temp = new ArrayList<>();
+        try
+        {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT * "+
+                    "FROM [DB_A2EFEF_dine].[db_a2efef_dining].[reservation] "+
+                    "WHERE reservation_id = ?;");
+            prepStatement.setInt(1, Integer.parseInt(reservation_id_detail_order));
+            ResultSet rs = prepStatement.executeQuery();
+            // Iterate through results
+            while(rs.next())
+            {
+                int r_id = rs.getInt("r_id");
+                Log.d("restaurant id", String.valueOf(r_id));
+                PreparedStatement prepStatement2 = connection.prepareStatement("SELECT name "+
+                "FROM [DB_A2EFEF_dine].[db_a2efef_dining].[restaurant] WHERE r_id = ?;");
+                prepStatement2.setInt(1, r_id);
+                ResultSet rs2 = prepStatement2.executeQuery();
+                while(rs2.next()) {
+                    temp.add(rs2.getString("name"));
+                }
+                temp.add(rs.getString("table_number"));
+                temp.add(rs.getString("date"));
+                temp.add(rs.getString("time"));
+            }
+        }
+        catch(SQLException e)
+        {
+            Log.e("ERROR", "Get Reservation Detail" + e.getMessage());
+        }
+        return temp;
+    }
+
+    public String findRestaurantId()
+    {
+        String temp = "";
+        try {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT r_id " +
+                    "FROM [DB_A2EFEF_dine].[db_a2efef_dining].[reservation] " +
+                    "WHERE reservation_id = ?;");
+            prepStatement.setInt(1, Integer.parseInt(reservation_id_detail_order));
+            ResultSet rs = prepStatement.executeQuery();
+            while(rs.next())
+            {
+                temp = rs.getString("r_id");
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e ("SQL ERROR" , "Find Restaurant Id");
+        }
+        return temp;
+    }
+
+    public ArrayList<TableListInfo> getTableList()
+    {
+        // TODO -- remove this
+        logged_in_restaurant = "4;";
+        ArrayList<TableListInfo> temp = new ArrayList<>();
+        try {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT * " +
+                    "FROM [DB_A2EFEF_dine].[db_a2efef_dining].[table] " +
+                    "WHERE r_id = ?;");
+            prepStatement.setInt(1, Integer.parseInt(logged_in_restaurant.split(";")[0]));
+            ResultSet rs = prepStatement.executeQuery();
+
+            while(rs.next())
+            {
+                TableListInfo tempTable = new TableListInfo(rs.getString("table_number"), rs.getString("seats"), rs.getString(("is_available")));
+                temp.add(tempTable);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e ("SQL ERROR" , "Get Table List");
+        }
+        Log.d("blah", String.valueOf(temp.size()));
+        return temp;
     }
 }

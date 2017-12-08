@@ -20,7 +20,7 @@ public class CustomerHomeActivity extends AppCompatActivity {
         show_reservations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Make showReservationActivity
+                //TODO: showReservationActivity
                 Intent showReservationActivity = new Intent(CustomerHomeActivity.this, ShowReservationActivity.class);
                 startActivity(showReservationActivity);
             }

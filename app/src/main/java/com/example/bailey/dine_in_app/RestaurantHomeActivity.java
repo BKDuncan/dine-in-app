@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class RestaurantHomeActivity extends AppCompatActivity {
 
@@ -13,6 +14,11 @@ public class RestaurantHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_home);
         setButtonListeners();
+
+        // Set Title to restaurant name
+        TextView title = this.findViewById(R.id.r_homepage_title);
+        String r_name = DatabaseController.getInstance().get_logged_in_restaurant().split(";")[1];
+        title.setText(r_name);
     }
 
     public void setButtonListeners(){

@@ -85,9 +85,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
+            public void onClick(View view) { attemptLogin(); }
         });
 
         Button signupButton = (Button) findViewById(R.id.signupButton);
@@ -154,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
+        // If already trying to login and waiting for response, return
         if (mAuthTask != null) {
             return;
         }
@@ -202,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return email.contains("@") || email.matches("^\\d+$");
     }
 
     private boolean isPasswordValid(String password) {
@@ -316,8 +315,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         @Override
         protected Boolean doInBackground(Void... params) {
                 DatabaseController db = DatabaseController.getInstance();
-                db.connect();
-                return false; //db.attemptLogin(mEmail, mPassword);
+                if(!db.is_connected())
+                    db.connect();
+                if(mEmail.contains("@"))
+                    return db.attemptCustomerLogin(mEmail, mPassword);
+                else
+                    return db.attemptRestaurantLogin(Integer.parseInt(mEmail), mPassword);
         }
 
         @Override

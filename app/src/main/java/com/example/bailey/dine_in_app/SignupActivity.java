@@ -1,6 +1,7 @@
 package com.example.bailey.dine_in_app;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,7 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.sql.Date;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -53,7 +57,42 @@ public class SignupActivity extends AppCompatActivity {
                 String password = (password_text.getText().toString());
                 String phone = (phone_text.getText().toString());
                 String city = (city_spinner.getSelectedItem().toString());
-                // Execute insert on separate thread
+
+                boolean invalid = false;
+
+                /*** ERROR CHECK ***/
+                if(email.length() < 1 || !email.contains("@")){
+                    email_text.setError("This is not a valid E-Mail");
+                    invalid = true;
+                }
+                if(fname.length() < 1){
+                    first_text.setError("Required");
+                    invalid = true;
+                }
+                if(lname.length() < 1){
+                    last_text.setError("Required");
+                    invalid = true;
+                }
+                if(password.length() < 1){
+                    password_text.setError("Required");
+                    invalid = true;
+                }
+                if(phone.length() < 1){
+                    phone_text.setError("Required");
+                    invalid = true;
+                }
+                if(city.matches("Select City")){
+                    TextView errorText = (TextView)city_spinner.getSelectedView();
+                    errorText.setError("");
+                    errorText.setTextColor(Color.RED);
+                    errorText.setText("Required");
+                    invalid = true;
+                }
+
+                if( invalid )
+                    return;
+
+                // Execute on separate thread
                 signupTask = new UserSignupTask(email, phone, city, fname, lname, password);
                 signupTask.execute();
                 Toast.makeText(SignupActivity.this.getBaseContext(), "Please be patient while we set up your account...", Toast.LENGTH_LONG).show();

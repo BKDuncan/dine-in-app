@@ -25,7 +25,7 @@
         tools:text="@string/add_T_button" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/restaurant_name_textbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

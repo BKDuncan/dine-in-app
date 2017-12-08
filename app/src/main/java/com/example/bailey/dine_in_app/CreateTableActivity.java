@@ -28,10 +28,14 @@ public class CreateTableActivity extends AppCompatActivity {
     }
 
     private void setButtonListener(){
-        Button createTable = (Button)this.findViewById(R.id.create_new_table_button);
+        Button createTable = this.findViewById(R.id.create_new_table_button);
         createTable.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                if(seat_text.getText().length() < 1) {
+                    seat_text.setError("Required");
+                    return;
+                }
                 tableTask = new CreateTableTask();
                 tableTask.execute();
             }
@@ -48,8 +52,13 @@ public class CreateTableActivity extends AppCompatActivity {
             DatabaseController db = DatabaseController.getInstance();
             if(!db.is_connected())
                 db.connect();
-            int seats = Integer.parseInt(seat_text.getText().toString());
+            int seats = -1;
+            try{ seats = Integer.parseInt(seat_text.getText().toString()); } catch (NumberFormatException e) {}
             boolean is_available = is_available_box.isActivated();
+            if(seats < 1){
+                seat_text.setError("Invalid Amount");
+                return false;
+            }
             return db.add_table(seats, is_available);
         }
 

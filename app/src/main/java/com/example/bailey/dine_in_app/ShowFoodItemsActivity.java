@@ -14,7 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class ShowFoodItemsActivity extends AppCompatActivity {
-    private changeAvailabilityTask changeAvaibility = null;
+
     String selectedItem = "";
     //
 
@@ -69,6 +69,21 @@ public class ShowFoodItemsActivity extends AppCompatActivity {
         changeAvailabilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (selectedItem.length() != 0){
+                    Intent foodItemAvailability = new Intent(view.getContext(), showFoodItemAvailability.class);
+                    foodItemAvailability.putExtra("itemName",selectedItem);
+                    startActivity(foodItemAvailability);
+
+                }
+
+            }
+        });
+
+
+        /*
+        changeAvailabilityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 // if an item is selected
                 if (selectedItem.length() != 0){
                     changeAvaibility = new ShowFoodItemsActivity.changeAvailabilityTask(selectedItem);
@@ -79,7 +94,7 @@ public class ShowFoodItemsActivity extends AppCompatActivity {
             }
         });
 
-
+        */
 
     }
 
@@ -120,51 +135,7 @@ public class ShowFoodItemsActivity extends AppCompatActivity {
 
     }
 
-    public class changeAvailabilityTask extends AsyncTask<Void, Void, Boolean> {
 
-        public String foodName;
-
-
-
-
-        changeAvailabilityTask(String foodName) {
-            this.foodName = foodName;
-
-            //Toast.makeText(MakeReservationActivity.this.getBaseContext(), time.toString() + " " + date.toString(), Toast.LENGTH_LONG).show();
-
-
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            DatabaseController db = DatabaseController.getInstance();
-            if(!db.is_connected())
-                db.connect();
-            return db.change_availability(foodName,ShowFoodItemsActivity.this);
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            changeAvaibility = null;//
-
-            if (success) {
-                finish();
-                //Toast.makeText(ShowFoodItemsActivity.this.getBaseContext(), "Sucessful", Toast.LENGTH_LONG).show();
-
-
-                Intent showFoodItem = new Intent(ShowFoodItemsActivity.this, ShowFoodItemsActivity.class);
-                startActivity(showFoodItem);
-            } else {
-                Toast.makeText(ShowFoodItemsActivity.this.getBaseContext(), "Failed to Change Availability", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            changeAvaibility = null;
-            Toast.makeText(ShowFoodItemsActivity.this.getBaseContext(), " Cancelled", Toast.LENGTH_LONG).show();
-        }
-    }
 
 
 }

@@ -5,10 +5,10 @@ android {
     defaultConfig {
 
         compileOptions
-        {
-            sourceCompatibility JavaVersion.VERSION_1_8
-            targetCompatibility JavaVersion.VERSION_1_8
-        }
+                {
+                    sourceCompatibility JavaVersion.VERSION_1_8
+                    targetCompatibility JavaVersion.VERSION_1_8
+                }
 
         applicationId "com.example.bailey.dine_in_app"
         minSdkVersion 18

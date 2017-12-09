@@ -14,7 +14,7 @@
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
@@ -61,33 +61,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/return_button"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="Return" />
-
-        <Button
-            android:id="@+id/change_availability_button"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="Change Availability" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/linearLayout6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -107,11 +80,11 @@
             android:text="Add Table" />
 
         <Button
-            android:id="@+id/show_reservation_button"
+            android:id="@+id/refresh_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="Show Reservation" />
+            android:text="Refresh List" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

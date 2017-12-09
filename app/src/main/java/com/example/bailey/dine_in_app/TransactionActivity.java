@@ -12,13 +12,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class TransactionActivity extends AppCompatActivity {
     private CreateTransactionTask transactionTask = null;
 
-    EditText tip;
-
+    private EditText tip_text;
+    private Spinner payment_type_spin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,8 @@ public class TransactionActivity extends AppCompatActivity {
         setButtonListener1();
         setButtonListener2();
 
-
+        tip_text = findViewById(R.id.transaction_tip);
+        payment_type_spin = findViewById(R.id.transaction_payment_type);
     }
 
     // sets the cancel button
@@ -51,7 +53,17 @@ public class TransactionActivity extends AppCompatActivity {
         payNow.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                transactionTask = new CreateTransactionTask();
+                String payment_type = payment_type_spin.getSelectedItem().toString();
+
+                /*** ERROR CHECK ***/
+                double tip = -1.0;
+                try { tip = Double.parseDouble(tip_text.getText().toString()); } catch(NumberFormatException e){}
+                if(tip < 0){
+                    tip_text.setError("Invalid Value");
+                    return;
+                }
+
+                transactionTask = new CreateTransactionTask(payment_type, tip);
                 transactionTask.execute();
             }
         });
@@ -61,14 +73,20 @@ public class TransactionActivity extends AppCompatActivity {
      * Uses a separate thread to try and login the user
      */
     public class CreateTransactionTask extends AsyncTask<Void, Void, Boolean> {
+        String payment_type;
+        double tip;
+
+        public CreateTransactionTask(String pt, double t){
+            payment_type = pt;
+            tip = t;
+        }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             DatabaseController db = DatabaseController.getInstance();
             if(!db.is_connected())
                 db.connect();
-
-            return true;
+            return db.add_transaction(payment_type, tip);
         }
 
         @Override
@@ -76,9 +94,8 @@ public class TransactionActivity extends AppCompatActivity {
             transactionTask = null;
 
             if (success) {
-                //finish();
                 Toast.makeText(TransactionActivity.this.getBaseContext(), "Payment Successful", Toast.LENGTH_LONG).show();
-                // Clear the activity stack of everything between This and Customer Homepage Activity
+                // Clear the activity stack of everything between This Activity and Customer Homepage Activity
                 Intent customerHome = new Intent(TransactionActivity.this, CustomerHomeActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(customerHome);

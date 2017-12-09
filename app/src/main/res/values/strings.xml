@@ -52,6 +52,9 @@
     <string name="special_request_hint">Special Request:</string>
     <string name="is_served_hint">Serve Status:</string>
 
+    <!-- Checkout -->
+    <string name="confirm">Confirm</string>
+
     <!-- Spinner (dropdown menu) Items -->
     <string-array name="city_list">
         <item>Select City</item>
@@ -112,7 +115,7 @@
     <string name="title_activity_customer_home">CustomerHomeActivity</string>
     <string name="title_activity_make_reservation">MakeReservationActivity</string>
     <string name="title_activity_transaction">TransactionActivity</string>
-    <string name="title_activity_checkout">CheckoutActivity</string>
+    <string name="title_activity_checkout">Your Order</string>
     <string name="title_activity_show_food_items">ShowFoodItemsActivity</string>
     <string name="title_activity_show_transaction">ShowTransactionActivity</string>
     <string name="title_activity_show_order">ShowOrderActivity</string>

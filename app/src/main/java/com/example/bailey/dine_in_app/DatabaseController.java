@@ -78,6 +78,8 @@ public class DatabaseController {
 
     public void setReservationIdDetailOrder (String i) {reservation_id_detail_order = i;}
 
+    public String getOrderAdded(){ return order_added; }
+
     /**
      * Database Connection Constants
      */
@@ -427,11 +429,12 @@ public class DatabaseController {
             prepStatement4.setDouble(1, food_items_total);
             prepStatement4.setInt(2, order_number);
             prepStatement4.executeUpdate();
-            this.setOrderAdded(Double.toString(order_number));
+
+            this.setOrderAdded(order_number + ";" + food_items_total);
         }
         catch(SQLException e)
         {
-            Log.e("ERROR", "Add New Order" + e.getMessage() + e.getStackTrace() );
+            Log.e("ERROR", "Add New Order" + e.getMessage());
             e.printStackTrace();
         }
 
@@ -517,9 +520,6 @@ public class DatabaseController {
 
     public ArrayList<String> getReservationList()
     {
-        //TODO -- remove this
-        logged_in_customer = "a@gmail.com;";
-
         String customerEmail = logged_in_customer.split(";")[0];
         ArrayList<String> temp = new ArrayList<>();
         try
@@ -638,7 +638,7 @@ public class DatabaseController {
             prepStatement.setInt(1, Integer.parseInt(logged_in_restaurant.split(";")[0]));
             prepStatement.setInt(2, Integer.parseInt(logged_in_restaurant.split(";")[0]));
             prepStatement.setInt(3, seats);
-            prepStatement.setBoolean(4, is_available);
+            prepStatement.setInt(4, is_available?1:0);
             prepStatement.executeUpdate();
 
             return true;
@@ -647,6 +647,56 @@ public class DatabaseController {
         }
         // Only get here if SQL Exception thrown, ie. the insert operation failed
         return false;
+    }
+
+    public boolean add_transaction(String payment_type, double tip){
+        try {
+            // Insert Transaction
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "INSERT INTO [db_a2efef_dining].[transaction]" +
+                            " ( payment_type, tip, r_id, order_number, t_number )" +
+                            " VALUES( ?, ?, ?, ?, ( SELECT MAX(t_number) + 1 " +
+                                                    "FROM [db_a2efef_dining].[transaction] )) ;");
+
+            prepStatement.setString(1, payment_type);
+            prepStatement.setDouble(2, tip);
+            prepStatement.setInt(3, Integer.parseInt(reserved_Restaurant.split(";")[0]));
+            prepStatement.setInt(4, Integer.parseInt(order_added.split(";")[0]));
+            prepStatement.executeUpdate();
+
+            return true;
+        } catch(SQLException e){
+            Log.e("ERROR", "Insert Transaction Error: " + e.getMessage());
+        }
+        // Only get here if SQL Exception thrown, ie. the insert operation failed
+        return false;
+    }
+
+    public ArrayList<String> getOrderItems(){
+        ArrayList<String> items = new ArrayList<>();
+
+        try {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT FI.name, FI.price " +
+                    "FROM [DB_A2EFEF_dine].[db_a2efef_dining].[order_has_food_item] OFI JOIN " +
+                        "[DB_A2EFEF_dine].[db_a2efef_dining].[food_item] FI ON FI.name = OFI.name " +
+                    "WHERE OFI.order_number = ?;");
+            prepStatement.setInt(1, Integer.parseInt(order_added.split(";")[0]));
+            ResultSet rs = prepStatement.executeQuery();
+
+            while(rs.next())
+            {
+                String temp_string = rs.getString("name");
+                double temp_double = rs.getDouble("price");
+                temp_string = String.format("%-30s -   $ %.2f", temp_string, temp_double);
+                items.add(temp_string);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e ("ERROR" , e.getMessage());
+        }
+
+        return items;
     }
 
     public ArrayList<String> getTransactionDetail(){
@@ -708,6 +758,45 @@ public class DatabaseController {
             Log.e("ERROR", "Table Reservations Error: " + e.getMessage());
         }
         return reservations;
+    }
+
+    // Remove item from an order and return new order subtotal
+    public double removeItemFromOrder(String item_name){
+        Log.d("STRING", item_name + " AND ");
+        int order_number = Integer.parseInt(order_added.split(";")[0]);
+        double order_price = Double.parseDouble(order_added.split(";")[1]);
+        try {
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "DELETE FROM [db_a2efef_dining].[order_has_food_item] " +
+                            "WHERE order_number = ? AND name = ? ;");
+            prepStatement.setInt(1, order_number);
+            prepStatement.setString(2, item_name);
+            prepStatement.executeUpdate();
+
+
+            prepStatement = connection.prepareStatement(
+                    "SELECT price FROM [db_a2efef_dining].[food_item] " +
+                            "WHERE name = ? ;");
+            prepStatement.setString(1, item_name);
+            ResultSet rs = prepStatement.executeQuery();
+
+            while(rs.next()){
+                order_price -= rs.getDouble("price");
+            }
+
+            prepStatement = connection.prepareStatement(
+                    "UPDATE [db_a2efef_dining].[order] " +
+                            "SET total_price = ? " +
+                            "WHERE order_number = ? ;");
+            prepStatement.setDouble(1, order_price);
+            prepStatement.setInt(2, order_number);
+            prepStatement.executeUpdate();
+
+        } catch(SQLException e){
+            Log.e("ERROR", "Remove item failure: " + e.getMessage());
+        }
+        order_added = order_number + ";" + order_price; // Update global var with new price
+        return order_price;
     }
 
 

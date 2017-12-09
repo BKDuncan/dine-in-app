@@ -111,6 +111,9 @@
             android:name=".ShowTableListActivity"
             android:label="@string/title_activity_show_table_list"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ShowTableDetail" />
+        <activity android:name=".ShowFoodItemDetail"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".showFoodItemAvailability"
             android:label="@string/title_activity_show_food_item_availability"

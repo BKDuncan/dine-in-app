@@ -60,13 +60,13 @@ public class ShowTransactionDetail extends AppCompatActivity {
         protected void onPostExecute(final ArrayList<String> details) {
             detailTask = null;
 
-            if (details.size() == 8) {
+            if (details.size() == 5) {
                 // Arraylist Received in the form: t_number, payment_type, tip, r_id, order_number, total_price, date time
-                subtotal.setText(details.get(5));
-                tip.setText(details.get(2));
-                date.setText(details.get(6));
-                time.setText(details.get(7));
-                payment_type.setText(details.get(1));
+                subtotal.setText(details.get(0));
+                tip.setText(details.get(1));
+                date.setText(details.get(2));
+                time.setText(details.get(3));
+                payment_type.setText(details.get(4));
             } else {
                 Toast.makeText(ShowTransactionDetail.this.getBaseContext(), "Transaction Detail Fetch Failed!!!", Toast.LENGTH_LONG).show();
             }

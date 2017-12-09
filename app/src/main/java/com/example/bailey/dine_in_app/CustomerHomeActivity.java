@@ -22,7 +22,7 @@ public class CustomerHomeActivity extends AppCompatActivity {
     }
 
     public void addButtonListeners(){
-        Button show_reservations = (Button)findViewById(R.id.show_reservation_button);
+        Button show_reservations = (Button)findViewById(R.id.refresh_button);
         show_reservations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

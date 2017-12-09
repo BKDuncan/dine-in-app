@@ -99,8 +99,11 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
             @Override
             public void onClick(View view) {
                 // Navigate to Signup Page
-                Intent signupActivity = new Intent(MainActivity.this, SignupActivity.class);
+//                Intent signupActivity = new Intent(MainActivity.this, SignupActivity.class);
+//                startActivity(signupActivity);
+                Intent signupActivity = new Intent(MainActivity.this, ShowTransactionActivity.class);
                 startActivity(signupActivity);
+
             }
         });
 

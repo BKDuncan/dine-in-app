@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -21,14 +24,29 @@ public class ShowReservationDetailActivity extends AppCompatActivity {
     private NetworkTasks n = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_reservation_detail);
+        setButtonListener();
         if(n == null)
         {
             n = new NetworkTasks();
             n.execute((Void) null);
         }
 
+    }
+
+    private void setButtonListener(){
+        Button order = (Button)this.findViewById(R.id.place_order_button);
+        order.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent placeOrder = new Intent(ShowReservationDetailActivity.this, PlaceOrderActivity.class);
+                startActivity(placeOrder);
+            }
+        });
     }
 
     public class NetworkTasks extends AsyncTask<Void, Void, Void>

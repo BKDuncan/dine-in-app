@@ -5,7 +5,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,17 +23,21 @@ import java.util.ArrayList;
  */
 
 public class ShowReservationActivity extends AppCompatActivity {
-    private NetworkTasks n = null;
+
+    private PopulateReservationList populateList = null;
     private AddReservedRestaurant a = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_reservation);
         setListSelectionListener();
-        if(n == null)
+        if(populateList == null)
         {
-            n = new NetworkTasks();
-            n.execute((Void) null);
+            populateList = new PopulateReservationList();
+            populateList.execute((Void) null);
         }
 
     }
@@ -42,55 +49,46 @@ public class ShowReservationActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 DatabaseController db = DatabaseController.getInstance();
-                db.setReservationIdDetailOrder(((String) listView.getItemAtPosition(i)).split(" ")[0]);
+                ReservationListInfo temp = (ReservationListInfo) listView.getItemAtPosition(i);
+                db.setReservationIdDetailOrder(String.valueOf(temp.getResId()));
+                if(a == null){
+                    a = new AddReservedRestaurant();
+                    a.execute((Void) null);
+                }
                 Intent reservationDetail = new Intent(ShowReservationActivity.this, ShowReservationDetailActivity.class);
                 startActivity(reservationDetail);
             }
         });
-
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DatabaseController db = DatabaseController.getInstance();
-                db.setReservationIdDetailOrder(((String) listView.getItemAtPosition(i)).split(" ")[0]);
-                if(a == null) {
-                    a = new AddReservedRestaurant();
-                    a.execute((Void) null);
-                }
-
-                Intent placeOrder = new Intent(ShowReservationActivity.this, PlaceOrderActivity.class);
-                startActivity(placeOrder);
-                return false;
-            }
-        });
     }
+
     public class AddReservedRestaurant extends AsyncTask<Void, Void, Void>
     {
         @Override
         protected Void doInBackground(Void... params)
         {
             DatabaseController db = DatabaseController.getInstance();
-            db.connect();
+            if(!db.is_connected())
+                db.connect();
+
             String s = db.findRestaurantId();
             db.setReservedRestaurant(s);
             ShowReservationActivity.this.a = null;
             return null;
         }
     }
-    public class NetworkTasks extends AsyncTask<Void, Void, Void>
+
+    public class PopulateReservationList extends AsyncTask<Void, Void, Void>
     {
         @Override
         protected Void doInBackground(Void... params)
         {
             DatabaseController db = DatabaseController.getInstance();
             db.connect();
-            ArrayList<String> reservations = db.getReservationList();
-            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ShowReservationActivity.this, R.layout.support_simple_spinner_dropdown_item);
-            for(int i = 0; i < reservations.size(); i++)
-            {
-                adapter.add(reservations.get(i));
-            }
+
+            ArrayList<ReservationListInfo> reservations = db.getReservationList();
+
+            final ReservationListAdapter adapter = new ReservationListAdapter(ShowReservationActivity.this, R.layout.reservation_list_adapter, reservations);
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -98,7 +96,7 @@ public class ShowReservationActivity extends AppCompatActivity {
                     listView.setAdapter(adapter);
                 }
             });
-            ShowReservationActivity.this.n = null;
+            ShowReservationActivity.this.populateList = null;
             return null;
         }
     }

@@ -5,10 +5,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -18,35 +19,33 @@ public class ShowTableListActivity extends AppCompatActivity {
     PopulateTableList populateList = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_table_list);
-        setButtonListener1();
-        setButtonListener2();
         setButtonListener3();
         setButtonListener4();
+        setListSelectionListener();
         if(populateList == null)
         {
             populateList = new PopulateTableList();
             populateList.execute((Void) null);
         }
     }
-    private void setButtonListener1(){
-        Button returnButton = (Button)this.findViewById(R.id.return_button);
-        returnButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent restaurantHome = new Intent(view.getContext(), RestaurantHomeActivity.class);
-                startActivity(restaurantHome);
-            }
-        });
-    }
-    private void setButtonListener2(){
-        Button availability = (Button)this.findViewById(R.id.change_availability_button);
-        availability.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-            }
-        });
+    @Override
+    protected void onRestart()
+    {
+        super.onRestart();
+        setContentView(R.layout.activity_show_table_list);
+        setButtonListener3();
+        setButtonListener4();
+        setListSelectionListener();
+        if(populateList == null)
+        {
+            populateList = new PopulateTableList();
+            populateList.execute((Void) null);
+        }
     }
 
     private void setButtonListener3(){
@@ -60,12 +59,27 @@ public class ShowTableListActivity extends AppCompatActivity {
         });
     }
     private void setButtonListener4(){
-        Button showTableReservation = (Button)this.findViewById(R.id.show_reservation_button);
+        Button showTableReservation = (Button)this.findViewById(R.id.refresh_button);
         showTableReservation.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent showReservations = new Intent(view.getContext(), ShowTableReservationsActivity.class);
-                startActivity(showReservations);
+                if(ShowTableListActivity.this.populateList == null){
+                    populateList = new PopulateTableList();
+                    populateList.execute((Void) null);
+                }
+            }
+        });
+    }
+    private void setListSelectionListener(){
+        final ListView listView = (ListView) this.findViewById(R.id.table_list);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DatabaseController db = DatabaseController.getInstance();
+                TableListInfo selection = (TableListInfo) listView.getItemAtPosition(i);
+                db.setSelectedTable(selection.getTableNumber());
+                Intent tableDetail = new Intent(view.getContext(), ShowTableDetail.class);
+                startActivity(tableDetail);
             }
         });
     }
@@ -89,4 +103,5 @@ public class ShowTableListActivity extends AppCompatActivity {
             return null;
         }
     }
+
 }

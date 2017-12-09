@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,13 +25,14 @@ import java.util.ArrayList;
  */
 
 public class PlaceOrderActivity extends AppCompatActivity {
-
-    private ArrayList<String> tempFoodItemList = new ArrayList<>();
     private NetworkTasks n = null;
     private UpdateFoodItemList u = null;
     private AddOrder a = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_order);
         setButtonListener1();
@@ -46,7 +50,8 @@ public class PlaceOrderActivity extends AppCompatActivity {
         checkout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(tempFoodItemList.size() == 0)
+                DatabaseController db = DatabaseController.getInstance();
+                if(db.checkFoodItemEmpty())
                 {
                     Toast.makeText(PlaceOrderActivity.this.getBaseContext(), "your order is empty, please add some items first", Toast.LENGTH_LONG).show();
                 }
@@ -79,25 +84,25 @@ public class PlaceOrderActivity extends AppCompatActivity {
             // TODO implement click to show details on the food item
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // TODO add logic to show the food item detail
+                DatabaseController db = DatabaseController.getInstance();
+                String selection = (String) listView.getItemAtPosition(i);
+                db.setFoodItemName(selection);
+                Intent foodItem = new Intent(view.getContext(), ShowFoodItemDetail.class);
+                startActivity(foodItem);
+            }
+        });
+
+
+//        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 //                DatabaseController db = DatabaseController.getInstance();
 //                String selection = (String) listView.getItemAtPosition(i);
 //                tempFoodItemList.add(selection);
 //                Toast.makeText(PlaceOrderActivity.this.getBaseContext(), "food item added to your order", Toast.LENGTH_LONG).show();
-            }
-        });
-
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DatabaseController db = DatabaseController.getInstance();
-                String selection = (String) listView.getItemAtPosition(i);
-                tempFoodItemList.add(selection);
-                Toast.makeText(PlaceOrderActivity.this.getBaseContext(), "food item added to your order", Toast.LENGTH_LONG).show();
-                return false;
-            }
-        });
+//                return false;
+//            }
+//        });
     }
 
     public class AddOrder extends AsyncTask<Void, Void, Void>
@@ -106,9 +111,9 @@ public class PlaceOrderActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params)
         {
             DatabaseController db = DatabaseController.getInstance();
-            db.connect();
-            db.addNewOrder(tempFoodItemList);
-
+            if(!db.is_connected())
+                db.connect();
+            db.addNewOrder();
             Intent checkoutActivity = new Intent(PlaceOrderActivity.this, CheckoutActivity.class);
             startActivity(checkoutActivity);
 
@@ -124,7 +129,8 @@ public class PlaceOrderActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params)
         {
             DatabaseController db = DatabaseController.getInstance();
-            db.connect();
+            if(!db.is_connected())
+                db.connect();
             Spinner mealTypeSpinner = (Spinner) PlaceOrderActivity.this.findViewById(R.id.meal_type_spinner);
             Spinner itemTypeSpinner = (Spinner) PlaceOrderActivity.this.findViewById(R.id.item_type_spinner);
             ArrayList<String> foodItems = db.getFoodItemsList(mealTypeSpinner.getSelectedItem().toString(), itemTypeSpinner.getSelectedItem().toString());
@@ -155,7 +161,8 @@ public class PlaceOrderActivity extends AppCompatActivity {
             final ArrayAdapter<String> mealTypeSpinnerAdapter = new ArrayAdapter<>(PlaceOrderActivity.this, R.layout.support_simple_spinner_dropdown_item);
             final ArrayAdapter<String> itemTypeSpinnerAdapter = new ArrayAdapter<>(PlaceOrderActivity.this, R.layout.support_simple_spinner_dropdown_item);
             DatabaseController db = DatabaseController.getInstance();
-            db.connect();
+            if(!db.is_connected())
+                db.connect();
             ArrayList<String> mealTypes = db.getMealTypeList();
             for(int i = 0; i < mealTypes.size(); i++)
             {

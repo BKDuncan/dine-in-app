@@ -884,6 +884,8 @@ public class DatabaseController {
                     @Override
                     public void run() {
                         Toast.makeText(activity,"Changed to Unavailable",Toast.LENGTH_SHORT).show();
+                        TextView text = (TextView) ((Activity)activity).findViewById(R.id.textView31);
+                        text.setText("No");
 
                     }
                 };
@@ -909,6 +911,8 @@ public class DatabaseController {
                     @Override
                     public void run() {
                         Toast.makeText(activity,"Changed to Available",Toast.LENGTH_SHORT).show();
+                        TextView text = (TextView) ((Activity)activity).findViewById(R.id.textView31);
+                        text.setText("Yes");
 
                     }
                 };

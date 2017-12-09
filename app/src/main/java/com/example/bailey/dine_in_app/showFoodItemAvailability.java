@@ -75,7 +75,7 @@ public class showFoodItemAvailability extends AppCompatActivity {
 
             if (success) {
                 //finish();
-                Toast.makeText(showFoodItemAvailability.this.getBaseContext(), "Sucessful", Toast.LENGTH_LONG).show();
+                //Toast.makeText(showFoodItemAvailability.this.getBaseContext(), "Sucessful", Toast.LENGTH_LONG).show();
 
             } else {
                 Toast.makeText(showFoodItemAvailability.this.getBaseContext(), "Failed to Change Availability", Toast.LENGTH_LONG).show();
@@ -128,7 +128,7 @@ public class showFoodItemAvailability extends AppCompatActivity {
             changeAvaibility = null;//
 
             if (success) {
-                finish();
+                //finish();
                 //Toast.makeText(ShowFoodItemsActivity.this.getBaseContext(), "Sucessful", Toast.LENGTH_LONG).show();
 
 

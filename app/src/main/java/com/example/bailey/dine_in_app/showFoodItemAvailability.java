@@ -135,7 +135,7 @@ public class showFoodItemAvailability extends AppCompatActivity {
                 //Intent showFoodItem = new Intent(showFoodItemAvailability.this, showFoodItemAvailability.class);
                 //startActivity(showFoodItem);
             } else {
-                Toast.makeText(showFoodItemAvailability.this.getBaseContext(), "Failed to Change Availability 79", Toast.LENGTH_LONG).show();
+                Toast.makeText(showFoodItemAvailability.this.getBaseContext(), "Failed to Change Availability", Toast.LENGTH_LONG).show();
             }
         }
 

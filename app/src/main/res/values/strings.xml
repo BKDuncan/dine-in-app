@@ -124,4 +124,5 @@
     <string name="title_activity_show_order_detail">ShowOrderDetailActivity</string>
     <string name="title_activity_show_reservation">ShowReservationActivity</string>
     <string name="title_activity_show_table_list">ShowTableListActivity</string>
+    <string name="title_activity_show_food_item_availability">showFoodItemAvailability</string>
 </resources>

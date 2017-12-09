@@ -2,12 +2,14 @@ package com.example.bailey.dine_in_app;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.content.Intent;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Connection;
@@ -38,7 +40,6 @@ public class DatabaseController {
     private String logged_in_customer ,
                    logged_in_restaurant ,
                    selected_restaurant ,
-                   selected_reservation,
                    selected_transaction,
                    selected_order,
                    selected_table,
@@ -780,6 +781,71 @@ public class DatabaseController {
 
         return temp;
     }
+
+
+
+
+    public boolean view_availability(String foodName, Context activity){
+        try{
+            Integer avail = 0;
+
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "SELECT is_available " +
+                            "FROM [db_a2efef_dining].[food_item] " +
+                            "WHERE name = ? "
+            );
+            prepStatement.setString(1,foodName);
+            ResultSet rs = prepStatement.executeQuery();
+
+
+            while (rs.next()){
+                avail = rs.getInt("is_available");
+            }
+
+
+            if(avail == 1){
+                Handler mainHandler1 = new Handler(activity.getMainLooper());
+
+                Runnable myRunnable1 = new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView text = (TextView) ((Activity)activity).findViewById(R.id.textView31);
+                        text.setText("Yes");
+
+
+                    }
+                };
+
+                mainHandler1.post(myRunnable1);
+
+
+            }
+            else{
+                Handler mainHandler2 = new Handler(activity.getMainLooper());
+
+                Runnable myRunnable2 = new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView text = (TextView) ((Activity)activity).findViewById(R.id.textView31);
+                        text.setText("No");
+
+                    }
+                };
+
+                mainHandler2.post(myRunnable2);
+            }
+
+            return true;
+        }catch (SQLException e){
+            Log.e("ERROR", "Error: " + e.getMessage());
+
+        }
+        return false;
+    }
+
+
+
+
 
     public boolean change_availability(String foodName, Context activity){
         try{

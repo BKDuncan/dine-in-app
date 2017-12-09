@@ -38,7 +38,6 @@ public class PlaceOrderActivity extends AppCompatActivity {
         setButtonListener1();
         setButtonListener2();
         setListSelectionListener();
-        Log.d("Sequence", "1");
         if(n == null) {
             n = new NetworkTasks();
             n.execute((Void) null);
@@ -47,7 +46,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
     }
 
     private void setButtonListener1(){
-        Button checkout = (Button)this.findViewById(R.id.checkout_button);
+        Button checkout = this.findViewById(R.id.checkout_button);
         checkout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -61,16 +60,15 @@ public class PlaceOrderActivity extends AppCompatActivity {
                         AddOrder a = new AddOrder();
                         a.execute((Void) null);
                     }
-                    Intent checkoutActivity = new Intent(view.getContext(), CheckoutActivity.class);
-                    startActivity(checkoutActivity);
+                    Toast.makeText(PlaceOrderActivity.this.getBaseContext(), "Placing your order...", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
     private void setButtonListener2(){
-        Button checkout = (Button)this.findViewById(R.id.refresh_button);
-        checkout.setOnClickListener(new View.OnClickListener(){
+        Button refresh = this.findViewById(R.id.refresh_button);
+        refresh.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                if(u == null) {
@@ -116,6 +114,9 @@ public class PlaceOrderActivity extends AppCompatActivity {
             if(!db.is_connected())
                 db.connect();
             db.addNewOrder();
+            Intent checkoutActivity = new Intent(PlaceOrderActivity.this, CheckoutActivity.class);
+            startActivity(checkoutActivity);
+
             return null;
         }
 

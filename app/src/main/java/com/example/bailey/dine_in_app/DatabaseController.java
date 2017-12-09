@@ -2,10 +2,15 @@ package com.example.bailey.dine_in_app;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.os.Handler;
 import android.content.Intent;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Array;
 import java.sql.Connection;
@@ -17,6 +22,9 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.Date;
+import java.sql.Time;
 
 /**
  * Singleton Class for database connection
@@ -93,6 +101,8 @@ public class DatabaseController {
     public void setReservedRestaurant (String r) {reserved_Restaurant = r;}
 
     public void setReservationIdDetailOrder (String i) {reservation_id_detail_order = i;}
+
+    public String getOrderAdded(){ return order_added; }
 
     /**
      * Database Connection Constants
@@ -440,11 +450,12 @@ public class DatabaseController {
             prepStatement4.setDouble(1, food_items_total);
             prepStatement4.setInt(2, order_number);
             prepStatement4.executeUpdate();
-            this.setOrderAdded(Double.toString(order_number));
+
+            this.setOrderAdded(order_number + ";" + food_items_total);
         }
         catch(SQLException e)
         {
-            Log.e("ERROR", "Add New Order" + e.getMessage() + e.getStackTrace() );
+            Log.e("ERROR", "Add New Order" + e.getMessage());
             e.printStackTrace();
         }
         tempFoodItemList = null;
@@ -631,9 +642,7 @@ public class DatabaseController {
                     "  FROM [DB_A2EFEF_dine].[db_a2efef_dining].[reservation]" +
                     "  WHERE reservation_id = ?;");
             prepStatement.setInt(1, Integer.parseInt(reservation_id_detail_order));
-            Log.d("Sequence 000", reservation_id_detail_order);
             ResultSet rs = prepStatement.executeQuery();
-            Log.d("Sequence 001", reservation_id_detail_order);
             while(rs.next())
             {
 
@@ -645,7 +654,6 @@ public class DatabaseController {
             Log.e ("SQL ERROR" , "Find Restaurant Id" + temp);
             e.printStackTrace();
         }
-        Log.d("Sequence", " 00 Reserved Restaurant: " + temp);
         return temp;
     }
 
@@ -697,7 +705,7 @@ public class DatabaseController {
             prepStatement.setInt(1, Integer.parseInt(logged_in_restaurant.split(";")[0]));
             prepStatement.setInt(2, Integer.parseInt(logged_in_restaurant.split(";")[0]));
             prepStatement.setInt(3, seats);
-            prepStatement.setBoolean(4, is_available);
+            prepStatement.setInt(4, is_available?1:0);
             prepStatement.executeUpdate();
 
             return true;
@@ -706,6 +714,56 @@ public class DatabaseController {
         }
         // Only get here if SQL Exception thrown, ie. the insert operation failed
         return false;
+    }
+
+    public boolean add_transaction(String payment_type, double tip){
+        try {
+            // Insert Transaction
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "INSERT INTO [db_a2efef_dining].[transaction]" +
+                            " ( payment_type, tip, r_id, order_number, t_number )" +
+                            " VALUES( ?, ?, ?, ?, ( SELECT MAX(t_number) + 1 " +
+                                                    "FROM [db_a2efef_dining].[transaction] )) ;");
+
+            prepStatement.setString(1, payment_type);
+            prepStatement.setDouble(2, tip);
+            prepStatement.setInt(3, Integer.parseInt(reserved_Restaurant.split(";")[0]));
+            prepStatement.setInt(4, Integer.parseInt(order_added.split(";")[0]));
+            prepStatement.executeUpdate();
+
+            return true;
+        } catch(SQLException e){
+            Log.e("ERROR", "Insert Transaction Error: " + e.getMessage());
+        }
+        // Only get here if SQL Exception thrown, ie. the insert operation failed
+        return false;
+    }
+
+    public ArrayList<String> getOrderItems(){
+        ArrayList<String> items = new ArrayList<>();
+
+        try {
+            PreparedStatement prepStatement = connection.prepareStatement("SELECT FI.name, FI.price " +
+                    "FROM [DB_A2EFEF_dine].[db_a2efef_dining].[order_has_food_item] OFI JOIN " +
+                        "[DB_A2EFEF_dine].[db_a2efef_dining].[food_item] FI ON FI.name = OFI.name " +
+                    "WHERE OFI.order_number = ?;");
+            prepStatement.setInt(1, Integer.parseInt(order_added.split(";")[0]));
+            ResultSet rs = prepStatement.executeQuery();
+
+            while(rs.next())
+            {
+                String temp_string = rs.getString("name");
+                double temp_double = rs.getDouble("price");
+                temp_string = String.format("%-30s -   $ %.2f", temp_string, temp_double);
+                items.add(temp_string);
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e ("ERROR" , e.getMessage());
+        }
+
+        return items;
     }
 
     public ArrayList<String> getTransactionDetail(){
@@ -784,6 +842,7 @@ public class DatabaseController {
                 available = rs.getString("is_available");
             }
 
+
             if(available.equals("1")){
                 available = "0";
             }
@@ -805,6 +864,265 @@ public class DatabaseController {
         }
     }
 
+    // Remove item from an order and return new order subtotal
+    public double removeItemFromOrder(String item_name){
+        Log.d("STRING", item_name + " AND ");
+        int order_number = Integer.parseInt(order_added.split(";")[0]);
+        double order_price = Double.parseDouble(order_added.split(";")[1]);
+        try {
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "DELETE FROM [db_a2efef_dining].[order_has_food_item] " +
+                            "WHERE order_number = ? AND name = ? ;");
+            prepStatement.setInt(1, order_number);
+            prepStatement.setString(2, item_name);
+            prepStatement.executeUpdate();
+
+
+            prepStatement = connection.prepareStatement(
+                    "SELECT price FROM [db_a2efef_dining].[food_item] " +
+                            "WHERE name = ? ;");
+            prepStatement.setString(1, item_name);
+            ResultSet rs = prepStatement.executeQuery();
+
+            while(rs.next()){
+                order_price -= rs.getDouble("price");
+            }
+
+            prepStatement = connection.prepareStatement(
+                    "UPDATE [db_a2efef_dining].[order] " +
+                            "SET total_price = ? " +
+                            "WHERE order_number = ? ;");
+            prepStatement.setDouble(1, order_price);
+            prepStatement.setInt(2, order_number);
+            prepStatement.executeUpdate();
+
+        } catch(SQLException e){
+            Log.e("ERROR", "Remove item failure: " + e.getMessage());
+        }
+        order_added = order_number + ";" + order_price; // Update global var with new price
+        return order_price;
+    }
+
+
+    // makes a reservation
+    public boolean make_reservation(String date, String time, Integer numOfSeats){
+        Integer tableNumber = 0;
+        try{
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "SELECT Top 1 T.table_number " +
+                            "FROM [db_a2efef_dining].[table] T " +
+                            "WHERE T.seats >= ? AND T.is_available = '1' AND T.r_id = 4 AND " +
+                            "NOT EXISTS ( SELECT * " +
+                            "FROM [db_a2efef_dining].[reservation] R " +
+                            "WHERE T.r_id = R.r_id AND R.table_number = T.table_number " +
+                            "AND  DATEDIFF(DAY, R.date, ?) = '0' " +
+                            "AND ABS(DATEDIFF(HOUR, R.time, ?)) < '1' ); "
+            );
+            prepStatement.setString(1, numOfSeats.toString());
+            prepStatement.setString(2, date);
+            prepStatement.setString(3,time);
+
+
+            ResultSet rs = prepStatement.executeQuery();
+
+            while(rs.next()){
+                tableNumber = rs.getInt("table_number");
+            }
+
+
+
+            PreparedStatement prepStatement1 = connection.prepareStatement(
+                    "INSERT INTO db_a2efef_dining.reservation" +
+                            "(r_id, table_number, email, date, time ) " +
+                            "VALUES (4, ?, 'b@gmail.com', ?, ?) ;");
+            prepStatement1.setString(1, tableNumber.toString());
+            prepStatement1.setString(2, date);
+            prepStatement1.setString(3,time);
+            prepStatement1.executeUpdate();
+
+
+            return true;
+        }catch (SQLException e){
+            Log.e("ERROR", "Error: " + e.getMessage());
+        }
+        return false;
+    }
+
+    // show food items for restaurants
+    public ArrayList<String> show_food_items(Integer r_id){
+
+
+        ArrayList<String> temp = new ArrayList<>();
+
+        try{
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "SELECT F.name " +
+                            "FROM [db_a2efef_dining].[restaurant_has_food_item] R JOIN [db_a2efef_dining].[food_item] F ON R.name = F.name " +
+                            "WHERE R.r_id = ?; "
+            );
+            prepStatement.setString(1,logged_in_restaurant.split(";")[0]);
+
+            ResultSet rs = prepStatement.executeQuery();
+
+            while(rs.next()){
+                temp.add(rs.getString("name"));
+            }
+
+        }catch (Exception e){
+            Log.e("ERROR", "Error: " + e.getMessage());
+        }
+
+        return temp;
+    }
+
+
+
+
+    public boolean view_availability(String foodName, Context activity){
+        try{
+            Integer avail = 0;
+
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "SELECT is_available " +
+                            "FROM [db_a2efef_dining].[food_item] " +
+                            "WHERE name = ? "
+            );
+            prepStatement.setString(1,foodName);
+            ResultSet rs = prepStatement.executeQuery();
+
+
+            while (rs.next()){
+                avail = rs.getInt("is_available");
+            }
+
+
+            if(avail == 1){
+                Handler mainHandler1 = new Handler(activity.getMainLooper());
+
+                Runnable myRunnable1 = new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView text = (TextView) ((Activity)activity).findViewById(R.id.textView31);
+                        text.setText("Yes");
+
+
+                    }
+                };
+
+                mainHandler1.post(myRunnable1);
+
+
+            }
+            else{
+                Handler mainHandler2 = new Handler(activity.getMainLooper());
+
+                Runnable myRunnable2 = new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView text = (TextView) ((Activity)activity).findViewById(R.id.textView31);
+                        text.setText("No");
+
+                    }
+                };
+
+                mainHandler2.post(myRunnable2);
+            }
+
+            return true;
+        }catch (SQLException e){
+            Log.e("ERROR", "Error: " + e.getMessage());
+
+        }
+        return false;
+    }
+
+
+
+
+
+    public boolean change_availability(String foodName, Context activity){
+        try{
+
+            Integer avail = 0;
+
+            PreparedStatement prepStatement = connection.prepareStatement(
+                    "SELECT is_available " +
+                            "FROM [db_a2efef_dining].[food_item] " +
+                            "WHERE name = ? "
+            );
+            prepStatement.setString(1,foodName);
+            ResultSet rs = prepStatement.executeQuery();
+
+
+            while (rs.next()){
+                avail = rs.getInt("is_available");
+            }
+
+
+
+
+            if(avail == 1){
+
+                PreparedStatement prepStatement1 = connection.prepareStatement(
+                        "UPDATE [db_a2efef_dining].[food_item] " +
+                                "SET is_available = 0 " +
+                                "WHERE name = ? ;"
+                );
+                prepStatement1.setString(1,foodName);
+                prepStatement1.executeUpdate();
+
+                Handler mainHandler = new Handler(activity.getMainLooper());
+
+                Runnable myRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(activity,"Changed to Unavailable",Toast.LENGTH_SHORT).show();
+                        TextView text = (TextView) ((Activity)activity).findViewById(R.id.textView31);
+                        text.setText("No");
+
+                    }
+                };
+
+                mainHandler.post(myRunnable);
+
+
+
+            }
+            else{
+
+                PreparedStatement prepStatement2 = connection.prepareStatement(
+                        "UPDATE [db_a2efef_dining].[food_item] " +
+                                "SET is_available = 1 " +
+                                "WHERE name = ? ;"
+                );
+                prepStatement2.setString(1,foodName);
+                prepStatement2.executeUpdate();
+
+                Handler mainHandler = new Handler(activity.getMainLooper());
+
+                Runnable myRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(activity,"Changed to Available",Toast.LENGTH_SHORT).show();
+                        TextView text = (TextView) ((Activity)activity).findViewById(R.id.textView31);
+                        text.setText("Yes");
+
+                    }
+                };
+
+                mainHandler.post(myRunnable);
+
+
+
+            }
+
+            return true;
+        }catch (SQLException e){
+            Log.e("ERROR", "Error: " + e.getMessage());
+
+        }
+        return false;
+    }
 
     public TableListInfo getTableDetail()
     {

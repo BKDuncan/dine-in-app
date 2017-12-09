@@ -60,7 +60,7 @@ public class CreateTableActivity extends AppCompatActivity {
                 db.connect();
             int seats = -1;
             try{ seats = Integer.parseInt(seat_text.getText().toString()); } catch (NumberFormatException e) {}
-            boolean is_available = is_available_box.isActivated();
+            boolean is_available = is_available_box.isChecked();
             if(seats < 1){
                 seat_text.setError("Invalid Amount");
                 return false;

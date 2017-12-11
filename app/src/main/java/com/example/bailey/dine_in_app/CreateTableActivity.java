@@ -42,6 +42,12 @@ public class CreateTableActivity extends AppCompatActivity {
                     seat_text.setError("Required");
                     return;
                 }
+                int seats = 0;
+                try{ seats = Integer.parseInt(seat_text.getText().toString()); } catch (NumberFormatException e) {}
+                if(seats < 1){
+                    seat_text.setError("invalid number of seats");
+                    return;
+                }
                 tableTask = new CreateTableTask();
                 tableTask.execute();
             }
@@ -62,7 +68,6 @@ public class CreateTableActivity extends AppCompatActivity {
             try{ seats = Integer.parseInt(seat_text.getText().toString()); } catch (NumberFormatException e) {}
             boolean is_available = is_available_box.isChecked();
             if(seats < 1){
-                seat_text.setError("Invalid Amount");
                 return false;
             }
             return db.add_table(seats, is_available);

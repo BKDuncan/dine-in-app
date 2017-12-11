@@ -41,9 +41,20 @@ public class ShowFoodItemDetail extends AppCompatActivity {
             public void onClick(View view) {
                 TextView name = (TextView) ShowFoodItemDetail.this.findViewById(R.id.food_item_name_text);
                 DatabaseController db = DatabaseController.getInstance();
-                db.addFoodItem(name.getText().toString());
-                Toast.makeText(ShowFoodItemDetail.this.getBaseContext(), "food item added to your order", Toast.LENGTH_LONG).show();
-                finish();
+                boolean already_added = false;
+                if(!db.checkFoodItemEmpty()) {
+                    for (String item : db.getTempFoodItemList()){
+                        if(item.matches(name.getText().toString()))
+                            already_added = true;
+                    }
+                }
+                if(already_added){
+                    Toast.makeText(ShowFoodItemDetail.this.getBaseContext(), "that food item is already part of your order", Toast.LENGTH_LONG).show();
+                } else {
+                    db.addFoodItem(name.getText().toString());
+                    Toast.makeText(ShowFoodItemDetail.this.getBaseContext(), "food item added to your order", Toast.LENGTH_LONG).show();
+                    finish();
+                }
             }
         });
     }

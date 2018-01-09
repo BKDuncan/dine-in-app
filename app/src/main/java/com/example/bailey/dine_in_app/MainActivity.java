@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Make sure everything is logged out
+       DatabaseController.getInstance().logout();
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();

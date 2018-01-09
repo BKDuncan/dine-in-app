@@ -71,6 +71,10 @@ public class DatabaseController {
         tempFoodItemList.add(name);
     }
 
+    public ArrayList<String> getTempFoodItemList(){
+        return tempFoodItemList;
+    }
+
     public void setSelectedTransaction(String s) {selected_transaction = s;}
 
     public void setFoodItemName(String n) {food_item_name = n;}
@@ -659,8 +663,6 @@ public class DatabaseController {
 
     public ArrayList<TableListInfo> getTableList()
     {
-        // TODO -- remove this
-        logged_in_restaurant = "4;";
         ArrayList<TableListInfo> temp = new ArrayList<>();
         try {
             PreparedStatement prepStatement = connection.prepareStatement("SELECT * " +
@@ -866,7 +868,7 @@ public class DatabaseController {
 
     // Remove item from an order and return new order subtotal
     public double removeItemFromOrder(String item_name){
-        Log.d("STRING", item_name + " AND ");
+        item_name = item_name.substring(0, item_name.length() - 3).trim(); // Remove trailing whitespace and dash
         int order_number = Integer.parseInt(order_added.split(";")[0]);
         double order_price = Double.parseDouble(order_added.split(";")[1]);
         try {
@@ -900,6 +902,7 @@ public class DatabaseController {
             Log.e("ERROR", "Remove item failure: " + e.getMessage());
         }
         order_added = order_number + ";" + order_price; // Update global var with new price
+        Log.d("STRING", order_price + " NEW PRICE ");
         return order_price;
     }
 
@@ -934,10 +937,12 @@ public class DatabaseController {
             PreparedStatement prepStatement1 = connection.prepareStatement(
                     "INSERT INTO db_a2efef_dining.reservation" +
                             "(r_id, table_number, email, date, time ) " +
-                            "VALUES (4, ?, 'b@gmail.com', ?, ?) ;");
-            prepStatement1.setString(1, tableNumber.toString());
-            prepStatement1.setString(2, date);
-            prepStatement1.setString(3,time);
+                            "VALUES (?, ?, ?, ?, ?) ;");
+            prepStatement1.setInt(1, Integer.parseInt(selected_restaurant));
+            prepStatement1.setString(2, tableNumber.toString());
+            prepStatement1.setString(3, logged_in_customer.split(";")[0]);
+            prepStatement1.setString(4, date);
+            prepStatement1.setString(5,time);
             prepStatement1.executeUpdate();
 
 
